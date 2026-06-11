@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIFA ワールドカップ 2026 - 予定と結果</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <h1>FIFA WORLD CUP 2026</h1>
+  <p class="subtitle">FIFAワールドカップ2026 北中米大会 - 予定と結果</p>
+  <p class="updated" id="updated"></p>
+</header>
+
+<section class="section">
+  <h2>グループステージ</h2>
+  <p class="hint">時刻はすべて日本時間（JST）。試合終了後は予定が結果に置き換わります。○=勝、△=分、×=負</p>
+  <div id="groups" class="groups-grid"></div>
+</section>
+
+<section class="section">
+  <h2>決勝トーナメント</h2>
+  <div id="knockout" class="knockout"></div>
+</section>
+
+<footer class="site-footer">
+  <p>データソース: <a href="https://en.wikipedia.org/wiki/2026_FIFA_World_Cup" target="_blank" rel="noopener">Wikipedia</a> | 試合結果はGitHub Actionsで自動更新</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

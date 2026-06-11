@@ -1,0 +1,238 @@
+:root {
+  --bg: #0b1320;
+  --bg-2: #142036;
+  --panel: #1a2842;
+  --border: #2a3a5c;
+  --text: #e8eef7;
+  --text-dim: #9aa7bd;
+  --accent: #ffd84d;
+  --accent-2: #4dc3ff;
+  --win: #4ade80;
+  --draw: #facc15;
+  --loss: #f87171;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic Pro", "Yu Gothic", Meiryo, system-ui, sans-serif;
+  background: linear-gradient(180deg, #050a14 0%, var(--bg) 100%);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+.site-header {
+  text-align: center;
+  padding: 32px 16px 16px;
+  background: radial-gradient(ellipse at top, rgba(255,216,77,0.08), transparent 60%);
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-shadow: 0 2px 12px rgba(255,216,77,0.25);
+}
+
+.subtitle {
+  margin: 4px 0 8px;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+.updated {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+.section {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 16px 20px 32px;
+}
+
+.section h2 {
+  font-size: 1.4rem;
+  border-left: 4px solid var(--accent);
+  padding-left: 10px;
+  margin: 16px 0 4px;
+}
+
+.hint {
+  margin: 0 0 16px;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* Groups */
+.groups-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+}
+
+.group-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.group-title {
+  margin: 0 0 8px;
+  color: var(--accent-2);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+
+.cross-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  table-layout: fixed;
+}
+
+.cross-table th,
+.cross-table td {
+  border: 1px solid var(--border);
+  padding: 4px 3px;
+  text-align: center;
+  vertical-align: middle;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+.cross-table thead th {
+  background: var(--bg-2);
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.72rem;
+}
+
+.cross-table .team-name {
+  text-align: left;
+  padding-left: 6px;
+  font-weight: 600;
+  background: var(--bg-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cross-table .self-cell {
+  background: #243352;
+}
+
+.cross-table .stat-cell {
+  background: #1c2944;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.cross-table td .scheduled {
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  line-height: 1.1;
+  display: inline-block;
+}
+
+.cross-table td .result {
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.result .mark-win { color: var(--win); }
+.result .mark-draw { color: var(--draw); }
+.result .mark-loss { color: var(--loss); }
+
+.flag {
+  display: inline-block;
+  margin-right: 4px;
+}
+
+/* Knockout bracket */
+.knockout {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.round-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.round-card h3 {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+
+.match-row {
+  border-bottom: 1px dashed var(--border);
+  padding: 8px 4px;
+  font-size: 0.85rem;
+}
+
+.match-row:last-child { border-bottom: none; }
+
+.match-meta {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  margin-bottom: 4px;
+}
+
+.match-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.match-team {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.match-team.home { text-align: left; }
+.match-team.away { text-align: right; }
+
+.match-score {
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 56px;
+  text-align: center;
+}
+
+.match-score.tbd {
+  color: var(--text-dim);
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 24px 16px 40px;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+.site-footer a { color: var(--accent-2); }
+
+@media (max-width: 600px) {
+  .cross-table { font-size: 0.7rem; }
+  .cross-table .team-name { font-size: 0.7rem; }
+  .cross-table thead th { font-size: 0.65rem; }
+  .group-card { padding: 8px; }
+}

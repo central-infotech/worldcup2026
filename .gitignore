@@ -1,0 +1,8 @@
+node_modules/
+.vercel
+__pycache__/
+*.pyc
+.DS_Store
+.env
+.env.local
+cron_entries.txt

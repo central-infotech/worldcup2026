@@ -1,0 +1,414 @@
+"""
+2026 FIFA World Cup の試合結果を Wikipedia から取得し、
+public/tournament.json を更新する。
+
+- グループステージ: 各グループの Football box collapsible テンプレートからスコアを抽出
+- 決勝トーナメント: knockout stage ページの Football box から抽出（チームが確定後）
+"""
+
+import json
+import re
+import sys
+import time
+import urllib.parse
+import urllib.request
+from datetime import datetime, timezone
+from pathlib import Path
+
+WIKI_API = "https://en.wikipedia.org/w/api.php"
+USER_AGENT = "worldcup2026-scraper/1.0 (https://github.com/central-infotech/worldcup2026)"
+
+GROUPS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
+
+
+def fetch_wikitext(page: str) -> str:
+    params = {
+        "action": "parse",
+        "page": page,
+        "prop": "wikitext",
+        "format": "json",
+        "formatversion": "2",
+    }
+    url = WIKI_API + "?" + urllib.parse.urlencode(params)
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        data = json.loads(r.read())
+    if "parse" not in data:
+        raise RuntimeError(f"failed to parse {page}: {data}")
+    return data["parse"]["wikitext"]
+
+
+def strip_wiki(s: str) -> str:
+    if s is None:
+        return ""
+    # [[Country|Display]] -> Display
+    s = re.sub(r"\[\[([^\]|]+)\|([^\]]+)\]\]", r"\2", s)
+    # [[Country]] -> Country
+    s = re.sub(r"\[\[([^\]]+)\]\]", r"\1", s)
+    # {{tl|x}} or other templates - remove (nested removed below)
+    prev = None
+    while prev != s:
+        prev = s
+        s = re.sub(r"\{\{[^{}]*\}\}", "", s)
+    # HTML tags
+    s = re.sub(r"<[^>]+>", "", s)
+    # &nbsp;
+    s = s.replace("&nbsp;", " ")
+    # Multiple whitespace
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
+# 3-letter code from {{#invoke:flag|fb-rt|MEX}} or {{flagicon|MEX}} or similar
+_FLAG_CODE_RE = re.compile(r"\{\{#invoke:flag\|[a-z\-]+\|([A-Z]{2,4})", re.IGNORECASE)
+_FLAGICON_RE = re.compile(r"\{\{(?:flagicon|fb|fbicon|flag)\|([A-Z]{2,4})", re.IGNORECASE)
+
+
+def extract_team_code_from_raw(raw: str) -> str:
+    """team1 / team2 フィールドから3文字コードを取り出す。失敗時は名前を返す"""
+    if not raw:
+        return ""
+    m = _FLAG_CODE_RE.search(raw)
+    if m:
+        return m.group(1).upper()
+    m = _FLAGICON_RE.search(raw)
+    if m:
+        return m.group(1).upper()
+    return strip_wiki(raw)
+
+
+_SCORE_LINK_RE = re.compile(r"\{\{score link\b[^}]*\|\s*(\d+)\s*[\-–—]\s*(\d+)\s*\}\}", re.IGNORECASE)
+
+
+def extract_score_from_raw(raw: str):
+    """score フィールドからホーム/アウェイのスコアを取り出す"""
+    if not raw:
+        return None, None
+    m = _SCORE_LINK_RE.search(raw)
+    if m:
+        return int(m.group(1)), int(m.group(2))
+    stripped = strip_wiki(raw)
+    m = re.search(r"(\d+)\s*[\-–—]\s*(\d+)", stripped)
+    if m:
+        return int(m.group(1)), int(m.group(2))
+    return None, None
+
+
+def parse_template_fields(body: str) -> dict:
+    """テンプレート本文 (|key=value 形式) を辞書化"""
+    # naive splitter: split by lines starting with '|', preserve nesting
+    fields = {}
+    # find segments: each '|key=value' may span multiple lines
+    # split on top-level | only
+    depth = 0
+    buf = []
+    parts = []
+    for ch in body:
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth = max(0, depth - 1)
+        if ch == "|" and depth == 0:
+            parts.append("".join(buf))
+            buf = []
+            continue
+        buf.append(ch)
+    parts.append("".join(buf))
+    for p in parts:
+        if "=" not in p:
+            continue
+        k, _, v = p.partition("=")
+        fields[k.strip().lower()] = v.strip()
+    return fields
+
+
+def find_football_boxes(wikitext: str) -> list:
+    """football box テンプレートを全て抽出。
+    対応形式:
+      {{#invoke:football box|main|...}}
+      {{Football box collapsible|...}}
+      {{Football box|...}}
+    """
+    results = []
+    text = wikitext
+    # case-insensitive needle detection
+    lower = text.lower()
+    needles = [
+        "{{#invoke:football box",
+        "{{football box collapsible",
+        "{{football box",
+    ]
+    i = 0
+    while i < len(text):
+        # find earliest needle position
+        idx = -1
+        used_needle = None
+        for n in needles:
+            j = lower.find(n, i)
+            if j != -1 and (idx == -1 or j < idx):
+                idx = j
+                used_needle = n
+        if idx == -1:
+            break
+        # find matching closing brace
+        depth = 0
+        end = idx
+        k = idx
+        while k < len(text):
+            if text[k:k+2] == "{{":
+                depth += 1
+                k += 2
+                continue
+            if text[k:k+2] == "}}":
+                depth -= 1
+                k += 2
+                if depth == 0:
+                    end = k
+                    break
+                continue
+            k += 1
+        body = text[idx + len(used_needle):end - 2]
+        if body.startswith("|"):
+            body = body[1:]
+        # For #invoke:football box, the first param is the function name (e.g., "main")
+        # which is followed by | and then named params.
+        if used_needle == "{{#invoke:football box":
+            # body looks like: main\n|date=...\n|team1=...
+            # skip up to the first newline-pipe or first pipe
+            if body.startswith("main"):
+                body = body[len("main"):]
+                body = body.lstrip()
+                if body.startswith("|"):
+                    body = body[1:]
+        fields = parse_template_fields(body)
+        fields["__template__"] = used_needle
+        results.append(fields)
+        i = end
+    return results
+
+
+def parse_score(s: str):
+    """スコア文字列から (home, away) を抽出。未確定なら None"""
+    if not s:
+        return None, None
+    s = strip_wiki(s)
+    # extract pure number-dash-number, skip aet/pen markers
+    m = re.search(r"(\d+)\s*[-–—]\s*(\d+)", s)
+    if not m:
+        return None, None
+    return int(m.group(1)), int(m.group(2))
+
+
+def parse_pen_score(s: str):
+    """ペナルティスコア文字列を解析"""
+    if not s:
+        return None
+    s = strip_wiki(s)
+    m = re.search(r"\(?\s*(\d+)\s*[-–—]\s*(\d+)\s*\)?", s)
+    if not m:
+        return None
+    return int(m.group(1)), int(m.group(2))
+
+
+def build_name_to_code(teams: dict) -> dict:
+    name_to_code = {}
+    for code, t in teams.items():
+        name_to_code[t["name_en"].lower()] = code
+    # Aliases
+    aliases = {
+        "united states": "USA",
+        "usa": "USA",
+        "ivory coast": "CIV",
+        "côte d'ivoire": "CIV",
+        "south korea": "KOR",
+        "republic of korea": "KOR",
+        "korea republic": "KOR",
+        "dr congo": "COD",
+        "congo dr": "COD",
+        "democratic republic of the congo": "COD",
+        "iran": "IRN",
+        "ir iran": "IRN",
+        "czechia": "CZE",
+        "cape verde": "CPV",
+        "cabo verde": "CPV",
+    }
+    for k, v in aliases.items():
+        name_to_code[k] = v
+    return name_to_code
+
+
+def resolve_code(raw_team: str, name_to_code: dict) -> str:
+    """team フィールドからチームコードを解決する。3文字コードならそのまま、名前なら辞書引き"""
+    code_or_name = extract_team_code_from_raw(raw_team)
+    if not code_or_name:
+        return ""
+    # 3-letter code path
+    if re.fullmatch(r"[A-Z]{2,4}", code_or_name):
+        # Map common Wikipedia codes to our internal codes
+        wiki_to_our = {
+            "USA": "USA",
+            "MEX": "MEX",
+            "RSA": "RSA", "ZAF": "RSA",
+            "KOR": "KOR",
+            "CZE": "CZE",
+            "CAN": "CAN",
+            "QAT": "QAT",
+            "SUI": "SUI", "CHE": "SUI",
+            "BIH": "BIH",
+            "BRA": "BRA",
+            "MAR": "MAR",
+            "HAI": "HAI", "HTI": "HAI",
+            "SCO": "SCO",
+            "PAR": "PAR", "PRY": "PAR",
+            "AUS": "AUS",
+            "TUR": "TUR", "TUE": "TUR",
+            "GER": "GER", "DEU": "GER",
+            "CUW": "CUW",
+            "CIV": "CIV",
+            "ECU": "ECU",
+            "NED": "NED", "NLD": "NED",
+            "JPN": "JPN",
+            "TUN": "TUN",
+            "SWE": "SWE",
+            "BEL": "BEL",
+            "EGY": "EGY",
+            "IRN": "IRN", "IRI": "IRN",
+            "NZL": "NZL",
+            "ESP": "ESP",
+            "CPV": "CPV",
+            "KSA": "KSA", "SAU": "KSA",
+            "URU": "URU", "URY": "URU",
+            "FRA": "FRA",
+            "SEN": "SEN",
+            "IRQ": "IRQ",
+            "NOR": "NOR",
+            "ARG": "ARG",
+            "ALG": "ALG", "DZA": "ALG",
+            "AUT": "AUT",
+            "JOR": "JOR",
+            "POR": "POR", "PRT": "POR",
+            "COD": "COD", "DRC": "COD",
+            "UZB": "UZB",
+            "COL": "COL",
+            "ENG": "ENG",
+            "CRO": "CRO", "HRV": "CRO",
+            "GHA": "GHA",
+            "PAN": "PAN",
+        }
+        return wiki_to_our.get(code_or_name, "")
+    # Fall back to name lookup
+    return name_to_code.get(code_or_name.lower(), "")
+
+
+def update_group_stage(data: dict, name_to_code: dict) -> int:
+    updated = 0
+    for g in GROUPS:
+        page = f"2026_FIFA_World_Cup_Group_{g}"
+        try:
+            wikitext = fetch_wikitext(page)
+        except Exception as e:
+            print(f"[warn] failed to fetch {page}: {e}", file=sys.stderr)
+            continue
+        boxes = find_football_boxes(wikitext)
+        for box in boxes:
+            c1 = resolve_code(box.get("team1", ""), name_to_code)
+            c2 = resolve_code(box.get("team2", ""), name_to_code)
+            hs, as_ = extract_score_from_raw(box.get("score", ""))
+            if hs is None or as_ is None:
+                continue
+            if not c1 or not c2:
+                print(f"[warn] unresolved teams in {page}: team1={box.get('team1', '')[:60]!r} team2={box.get('team2', '')[:60]!r}", file=sys.stderr)
+                continue
+            for m in data["group_matches"]:
+                if m["group"] != g:
+                    continue
+                if m["home"] == c1 and m["away"] == c2:
+                    if m.get("home_score") != hs or m.get("away_score") != as_:
+                        m["home_score"] = hs
+                        m["away_score"] = as_
+                        m["status"] = "finished"
+                        updated += 1
+                        print(f"[update] {m['id']}: {c1} {hs}-{as_} {c2}")
+                    break
+        time.sleep(0.3)
+    return updated
+
+
+def update_knockout(data: dict, name_to_code: dict) -> int:
+    """決勝トーナメントの試合結果（とチーム確定）を更新"""
+    page = "2026_FIFA_World_Cup_knockout_stage"
+    try:
+        wikitext = fetch_wikitext(page)
+    except Exception as e:
+        print(f"[warn] failed to fetch {page}: {e}", file=sys.stderr)
+        return 0
+    boxes = find_football_boxes(wikitext)
+    if not boxes:
+        return 0
+
+    updated = 0
+    for box in boxes:
+        c1 = resolve_code(box.get("team1", ""), name_to_code)
+        c2 = resolve_code(box.get("team2", ""), name_to_code)
+        hs, as_ = extract_score_from_raw(box.get("score", ""))
+        venue_str = strip_wiki(box.get("stadium", ""))
+
+        if not c1 or not c2:
+            continue
+
+        # Try to match by venue + approximate date
+        target = None
+        for m in data["knockout_matches"]:
+            if m.get("home") == c1 and m.get("away") == c2:
+                target = m
+                break
+        if target is None:
+            # Match by venue stem
+            for m in data["knockout_matches"]:
+                if venue_str and venue_str.split(",")[0].lower() in m.get("venue", "").lower():
+                    if m.get("home") in (None, c1) and m.get("away") in (None, c2):
+                        target = m
+                        break
+        if target is None:
+            continue
+
+        changed = False
+        if target.get("home") != c1:
+            target["home"] = c1
+            changed = True
+        if target.get("away") != c2:
+            target["away"] = c2
+            changed = True
+        if hs is not None and (target.get("home_score") != hs or target.get("away_score") != as_):
+            target["home_score"] = hs
+            target["away_score"] = as_
+            target["status"] = "finished"
+            changed = True
+        if changed:
+            updated += 1
+            print(f"[update] knockout {target['id']}: {c1} vs {c2} ({hs}-{as_})")
+    return updated
+
+
+def main():
+    repo_root = Path(__file__).resolve().parent.parent
+    data_path = repo_root / "public" / "tournament.json"
+    data = json.loads(data_path.read_text(encoding="utf-8"))
+    name_to_code = build_name_to_code(data["teams"])
+
+    g_updated = update_group_stage(data, name_to_code)
+    k_updated = update_knockout(data, name_to_code)
+    total = g_updated + k_updated
+    print(f"[done] updated {total} matches (group: {g_updated}, knockout: {k_updated})")
+
+    if total > 0:
+        data["updated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        data_path.write_text(
+            json.dumps(data, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        print(f"[done] wrote {data_path}")
+
+
+if __name__ == "__main__":
+    main()
