@@ -61,10 +61,9 @@ function nameSpan(text) {
   return `<span class="team-name-text"${style}>${text}</span>`;
 }
 
-/* ====== Placeholder slot label (e.g. "1A" -> "グループA1位") ====== */
+/* ====== Placeholder slot label ====== */
 function slotLabelJa(slot) {
   if (!slot) return 'TBD';
-  // 1A / 2B / 3(A/B/C/D/F) / W73 / L101
   let m;
   m = slot.match(/^(\d)([A-L])$/);
   if (m) return `グループ${m[2]}${m[1]}位`;
@@ -77,68 +76,126 @@ function slotLabelJa(slot) {
   return slot;
 }
 
-/* ====== Bracket rendering ====== */
-const BRACKET_LAYOUT = {
-  // Left side, top -> bottom (matches that feed each SF half)
-  leftR32: [74, 77, 73, 75, 83, 84, 81, 82],
-  leftR16: [89, 90, 93, 94],
-  leftQf:  [97, 98],
-  leftSf:  [101],
+/* ====== Bracket rendering ======
+   Layout reads left→right:
+     R32L → R16L → QFL → SFL → FINAL → SFR → QFR → R16R → R32R
+   Matches are wrapped in <div class="pair-group"> of two so that
+   CSS pseudo-elements can draw the connector tree to the next round.
+*/
+const LEFT_ROUNDS = [
+  { label: 'ラウンド32', cls: 'col-r32', pairs: [[74, 77], [73, 75], [83, 84], [81, 82]] },
+  { label: 'ラウンド16', cls: 'col-r16', pairs: [[89, 90], [93, 94]] },
+  { label: '準々決勝',   cls: 'col-qf',  pairs: [[97, 98]] },
+  { label: '準決勝',     cls: 'col-sf',  pairs: [[101]] },
+];
 
-  // Right side
-  rightR32: [76, 78, 79, 80, 86, 88, 85, 87],
-  rightR16: [91, 92, 95, 96],
-  rightQf:  [99, 100],
-  rightSf:  [102],
-};
+const RIGHT_ROUNDS_INNER_OUT = [
+  { label: '準決勝',     cls: 'col-sf',  pairs: [[102]] },
+  { label: '準々決勝',   cls: 'col-qf',  pairs: [[99, 100]] },
+  { label: 'ラウンド16', cls: 'col-r16', pairs: [[91, 92], [95, 96]] },
+  { label: 'ラウンド32', cls: 'col-r32', pairs: [[76, 78], [79, 80], [86, 88], [85, 87]] },
+];
 
 function renderBracket(data) {
   const container = document.getElementById('bracket');
-  const byId = Object.fromEntries(
-    data.knockout_matches.map((m) => [String(m.id), m]),
-  );
+  container.innerHTML = '';
+  const byId = Object.fromEntries(data.knockout_matches.map((m) => [String(m.id), m]));
 
-  const cols = [
-    { label: 'ラウンド32', cls: 'col-r32', ids: BRACKET_LAYOUT.leftR32 },
-    { label: 'ラウンド16', cls: 'col-r16', ids: BRACKET_LAYOUT.leftR16 },
-    { label: '準々決勝', cls: 'col-qf',  ids: BRACKET_LAYOUT.leftQf },
-    { label: '準決勝',   cls: 'col-sf',  ids: BRACKET_LAYOUT.leftSf },
-    { label: '決勝',     cls: 'col-final', ids: ['__final__'] },
-    { label: '準決勝',   cls: 'col-sf',  ids: BRACKET_LAYOUT.rightSf },
-    { label: '準々決勝', cls: 'col-qf',  ids: BRACKET_LAYOUT.rightQf },
-    { label: 'ラウンド16', cls: 'col-r16', ids: BRACKET_LAYOUT.rightR16 },
-    { label: 'ラウンド32', cls: 'col-r32', ids: BRACKET_LAYOUT.rightR32 },
-  ];
-
-  for (const col of cols) {
-    const colEl = document.createElement('div');
-    colEl.className = 'bracket-col ' + col.cls;
-    const lbl = document.createElement('div');
-    lbl.className = 'col-label';
-    lbl.textContent = col.label;
-    colEl.appendChild(lbl);
-    for (const id of col.ids) {
-      if (id === '__final__') {
-        // final + 3rd
-        const finalMatch = byId['104'];
-        const thirdMatch = byId['103'];
-        if (finalMatch) colEl.appendChild(buildMatchCell(finalMatch, data, 'match-final'));
-        const trophy = document.createElement('div');
-        trophy.className = 'trophy';
-        trophy.textContent = '🏆';
-        colEl.appendChild(trophy);
-        const thirdLbl = document.createElement('div');
-        thirdLbl.className = 'third-label';
-        thirdLbl.textContent = '3位決定戦';
-        colEl.appendChild(thirdLbl);
-        if (thirdMatch) colEl.appendChild(buildMatchCell(thirdMatch, data, 'match-3rd'));
-      } else {
-        const m = byId[String(id)];
-        if (m) colEl.appendChild(buildMatchCell(m, data));
-      }
-    }
-    container.appendChild(colEl);
+  for (const round of LEFT_ROUNDS) {
+    container.appendChild(buildRoundColumn(round, byId, data, 'side-left'));
   }
+  container.appendChild(buildFinalColumn(byId, data));
+  for (const round of RIGHT_ROUNDS_INNER_OUT) {
+    container.appendChild(buildRoundColumn(round, byId, data, 'side-right'));
+  }
+}
+
+function buildRoundColumn(round, byId, data, side) {
+  const col = document.createElement('div');
+  col.className = `round ${round.cls} ${side}`;
+
+  const heading = document.createElement('h3');
+  heading.textContent = round.label;
+  col.appendChild(heading);
+
+  const matchesEl = document.createElement('div');
+  matchesEl.className = 'matches';
+
+  for (const pair of round.pairs) {
+    const pairEl = document.createElement('div');
+    pairEl.className = 'pair-group' + (pair.length === 1 ? ' single' : '');
+
+    let topAdv = false;
+    let botAdv = false;
+    pair.forEach((id, i) => {
+      const m = byId[String(id)];
+      if (!m) return;
+      const cell = buildMatchCell(m, data);
+      const isFinished = m.status === 'finished';
+      if (isFinished) {
+        cell.classList.add('advancing');
+        if (i === 0) topAdv = true;
+        else botAdv = true;
+      }
+      pairEl.appendChild(cell);
+    });
+
+    if (pair.length === 1) {
+      if (topAdv) pairEl.classList.add('has-advancing');
+    } else {
+      if (topAdv && botAdv) pairEl.classList.add('both-advancing', 'has-advancing');
+      else if (topAdv) pairEl.classList.add('top-advancing', 'has-advancing');
+      else if (botAdv) pairEl.classList.add('bottom-advancing', 'has-advancing');
+    }
+
+    matchesEl.appendChild(pairEl);
+  }
+
+  col.appendChild(matchesEl);
+  return col;
+}
+
+function buildFinalColumn(byId, data) {
+  const col = document.createElement('div');
+  col.className = 'round col-final';
+
+  const heading = document.createElement('h3');
+  heading.textContent = '決勝';
+  col.appendChild(heading);
+
+  const matchesEl = document.createElement('div');
+  matchesEl.className = 'matches final-matches';
+
+  const finalMatch = byId['104'];
+  const thirdMatch = byId['103'];
+
+  const trophy = document.createElement('div');
+  trophy.className = 'trophy';
+  trophy.textContent = '🏆';
+  matchesEl.appendChild(trophy);
+
+  if (finalMatch) {
+    const cell = buildMatchCell(finalMatch, data, 'match-final');
+    if (finalMatch.status === 'finished') cell.classList.add('advancing');
+    matchesEl.appendChild(cell);
+  }
+
+  const thirdSection = document.createElement('div');
+  thirdSection.className = 'third-section';
+
+  const thirdLabel = document.createElement('div');
+  thirdLabel.className = 'third-label';
+  thirdLabel.textContent = '3位決定戦';
+  thirdSection.appendChild(thirdLabel);
+
+  if (thirdMatch) {
+    const cell = buildMatchCell(thirdMatch, data, 'match-3rd');
+    thirdSection.appendChild(cell);
+  }
+  matchesEl.appendChild(thirdSection);
+
+  col.appendChild(matchesEl);
+  return col;
 }
 
 function buildMatchCell(m, data, extraCls) {
@@ -151,9 +208,7 @@ function buildMatchCell(m, data, extraCls) {
   date.innerHTML = `${dt.date}<br>${dt.time}`;
   cell.appendChild(date);
 
-  // home team
   cell.appendChild(bracketTeamRow(m.home, m.home_code, m.home_score, m, data, 'home'));
-  // away team
   cell.appendChild(bracketTeamRow(m.away, m.away_code, m.away_score, m, data, 'away'));
   return cell;
 }
