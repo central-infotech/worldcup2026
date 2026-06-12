@@ -53,6 +53,14 @@ function flagImg(team, sizeClass) {
   return `<img class="flag-img${cls}" src="flags/${team.iso2}.png" alt="" loading="lazy">`;
 }
 
+/* ====== Scaled team name (base = 6 chars, shrinks for longer names) ====== */
+function nameSpan(text) {
+  const len = [...text].length;
+  const scale = len <= 6 ? 1 : Math.max(0.55, 6 / len);
+  const style = scale < 1 ? ` style="--name-scale:${scale.toFixed(2)}"` : '';
+  return `<span class="team-name-text"${style}>${text}</span>`;
+}
+
 /* ====== Placeholder slot label (e.g. "1A" -> "グループA1位") ====== */
 function slotLabelJa(slot) {
   if (!slot) return 'TBD';
@@ -163,10 +171,10 @@ function bracketTeamRow(teamCode, slotCode, score, match, data, side) {
       else cls = as > hs ? 'winner' : (as < hs ? 'loser' : '');
     }
     if (cls) row.classList.add(cls);
-    row.innerHTML = `${flagImg(team, 'flag-sm')}<span class="team-name">${team.name_ja}</span>${score != null ? `<span class="team-score">${score}</span>` : ''}`;
+    row.innerHTML = `${flagImg(team, 'flag-sm')}<span class="team-name">${nameSpan(team.name_ja)}</span>${score != null ? `<span class="team-score">${score}</span>` : ''}`;
   } else {
     row.classList.add('placeholder');
-    row.innerHTML = `<span class="team-name">${slotLabelJa(slotCode)}</span>`;
+    row.innerHTML = `<span class="team-name">${nameSpan(slotLabelJa(slotCode))}</span>`;
   }
   return row;
 }
@@ -228,6 +236,13 @@ function buildCrossTable(teamCodes, teamsRef, matches, standings) {
   const table = document.createElement('table');
   table.className = 'cross-table';
 
+  const colgroup = document.createElement('colgroup');
+  const cName = document.createElement('col'); cName.className = 'col-name'; colgroup.appendChild(cName);
+  for (let i = 0; i < teamCodes.length; i++) colgroup.appendChild(document.createElement('col'));
+  const cPts = document.createElement('col'); cPts.className = 'col-stat'; colgroup.appendChild(cPts);
+  const cGd  = document.createElement('col'); cGd.className  = 'col-stat'; colgroup.appendChild(cGd);
+  table.appendChild(colgroup);
+
   const thead = document.createElement('thead');
   const hr = document.createElement('tr');
   hr.appendChild(th(''));
@@ -242,7 +257,7 @@ function buildCrossTable(teamCodes, teamsRef, matches, standings) {
     const tr = document.createElement('tr');
     const nameTd = document.createElement('td');
     nameTd.className = 'team-name-cell';
-    nameTd.innerHTML = `${flagImg(teamsRef[rowCode], 'flag-sm')}${teamsRef[rowCode].name_ja}`;
+    nameTd.innerHTML = `${flagImg(teamsRef[rowCode], 'flag-sm')}${nameSpan(teamsRef[rowCode].name_ja)}`;
     tr.appendChild(nameTd);
 
     for (const colCode of teamCodes) {
