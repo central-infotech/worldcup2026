@@ -136,11 +136,12 @@ body {
   position: absolute;
   top: 2px;
   left: 6px;
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   color: var(--text-dim);
   line-height: 1;
   pointer-events: none;
   letter-spacing: 0;
+  font-feature-settings: "tnum";
 }
 
 .match-cell.match-final {

@@ -66,6 +66,28 @@ function placeholderSpan(text) {
   return `<span class="team-name-text placeholder-text">${text}</span>`;
 }
 
+/* ====== Per-round renumbering ======
+   FIFA match IDs (73–104) aren't intuitive — re-label every knockout
+   cell as #32-NN / #16-NN / #8-NN / #4-NN based on visual position in
+   the bracket (left-side top → bottom, then right-side top → bottom).
+   Final / 3rd place keep their column heading and have no badge.       */
+const MATCH_DISPLAY_ID = (function () {
+  const m = {};
+  const assign = (ids, fmt) => ids.forEach((id, i) => { m[String(id)] = fmt(i); });
+  assign([74, 77, 73, 75, 83, 84, 81, 82], (i) => `#32-${String(i + 1).padStart(2, '0')}`);
+  assign([76, 78, 79, 80, 86, 88, 85, 87], (i) => `#32-${String(i + 9).padStart(2, '0')}`);
+  assign([89, 90, 93, 94], (i) => `#16-${String(i + 1).padStart(2, '0')}`);
+  assign([91, 92, 95, 96], (i) => `#16-${String(i + 5).padStart(2, '0')}`);
+  assign([97, 98],  (i) => `#8-${String(i + 1).padStart(2, '0')}`);
+  assign([99, 100], (i) => `#8-${String(i + 3).padStart(2, '0')}`);
+  assign([101, 102], (i) => `#4-${String(i + 1).padStart(2, '0')}`);
+  return m;
+})();
+
+function matchDisplayId(id) {
+  return MATCH_DISPLAY_ID[String(id)] || null;
+}
+
 /* ====== Placeholder slot label ====== */
 function slotLabelJa(slot) {
   if (!slot) return 'TBD';
@@ -75,9 +97,9 @@ function slotLabelJa(slot) {
   m = slot.match(/^3\(([A-L/]+)\)$/);
   if (m) return `グループ${m[1]}3位`;
   m = slot.match(/^W(\d+)$/);
-  if (m) return `第${m[1]}試合勝者`;
+  if (m) return `${matchDisplayId(m[1]) || ('#' + m[1])}勝者`;
   m = slot.match(/^L(\d+)$/);
-  if (m) return `第${m[1]}試合敗者`;
+  if (m) return `${matchDisplayId(m[1]) || ('#' + m[1])}敗者`;
   return slot;
 }
 
@@ -318,11 +340,15 @@ function buildMatchCell(m, ctx, extraCls) {
   const cell = document.createElement('div');
   cell.className = 'match-cell' + (extraCls ? ' ' + extraCls : '');
 
-  // Match number badge at top-left so users can locate "第74試合勝者" etc.
-  const num = document.createElement('div');
-  num.className = 'match-num';
-  num.textContent = '#' + m.id;
-  cell.appendChild(num);
+  // Match number badge (top-left) so placeholders like "#32-01勝者" are findable.
+  // Final / 3rd place have no badge — the column heading already labels them.
+  const displayId = matchDisplayId(m.id);
+  if (displayId) {
+    const num = document.createElement('div');
+    num.className = 'match-num';
+    num.textContent = displayId;
+    cell.appendChild(num);
+  }
 
   const dt = getJstParts(m.kickoff_utc);
   const date = document.createElement('div');
