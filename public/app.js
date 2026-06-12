@@ -324,19 +324,15 @@ function buildFinalColumn(ctx) {
     matchesEl.appendChild(cell);
   }
 
-  const thirdSection = document.createElement('div');
-  thirdSection.className = 'third-section';
-
   const thirdLabel = document.createElement('div');
   thirdLabel.className = 'third-label';
   thirdLabel.textContent = '3位決定戦';
-  thirdSection.appendChild(thirdLabel);
+  matchesEl.appendChild(thirdLabel);
 
   if (thirdMatch) {
     const cell = buildMatchCell(thirdMatch, ctx, 'match-3rd');
-    thirdSection.appendChild(cell);
+    matchesEl.appendChild(cell);
   }
-  matchesEl.appendChild(thirdSection);
 
   col.appendChild(matchesEl);
   return col;

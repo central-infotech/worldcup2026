@@ -326,18 +326,24 @@ body {
   transform: translateY(-50%);
 }
 
-.col-final .third-section {
+/* 3位決定戦: match-3rd box aligned to 75% so it sits at the same
+   vertical position as the QF bottom matches (#8-02, #8-04). */
+.col-final .match-3rd {
   position: absolute;
-  top: calc(25% + 70px);
+  top: 75%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.col-final .third-label {
+  position: absolute;
+  top: calc(75% - 60px);
   left: 0;
   right: 0;
   text-align: center;
-}
-
-.col-final .third-section .third-label {
   font-size: 0.78rem;
   color: var(--text-dim);
-  margin-bottom: 6px;
 }
 
 /* L-shape connectors that ladder up from each SF (50%) to the Final (25%).
