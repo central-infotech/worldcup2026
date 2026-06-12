@@ -119,9 +119,56 @@ function buildGroupStandings(data) {
       matches.every((m) => m.home_score != null && m.away_score != null);
     const standings = computeStandings(codes, matches);
     standings.sort(rankCompare);
-    result[gk] = { allFinished, sortedCodes: standings.map((s) => s.code) };
+
+    const clinched = computeClinchedPositions(standings, matches);
+
+    result[gk] = {
+      allFinished,
+      sortedCodes: standings.map((s) => s.code),
+      clinched,
+    };
   }
   return result;
+}
+
+/* For each team, decide whether its final position in the group is already
+   mathematically guaranteed from current points alone (tiebreakers ignored —
+   only strict point gaps are considered). Returns { '1': code|null, '2': … }.
+   Allows the bracket to fill in '1A'/'2B' as soon as it is decided, e.g. when
+   a team has 6 pts after 2 wins and no other team can reach 6 pts. */
+function computeClinchedPositions(standings, matches) {
+  const played = {};
+  for (const s of standings) played[s.code] = 0;
+  for (const m of matches) {
+    if (m.home_score != null && m.away_score != null) {
+      played[m.home]++;
+      played[m.away]++;
+    }
+  }
+  const maxPts = {};
+  for (const s of standings) maxPts[s.code] = s.Pts + (3 - played[s.code]) * 3;
+
+  const clinched = {};
+  for (const s of standings) {
+    let above = 0;
+    let undetermined = false;
+    for (const o of standings) {
+      if (o.code === s.code) continue;
+      if (o.Pts > maxPts[s.code]) {
+        above++;
+      } else if (maxPts[o.code] < s.Pts) {
+        // below — fine
+      } else {
+        undetermined = true;
+        break;
+      }
+    }
+    if (!undetermined) {
+      const pos = above + 1;
+      if (!clinched[String(pos)]) clinched[String(pos)] = s.code;
+    }
+  }
+  return clinched;
 }
 
 function resolveSlot(slot, groupStandings, byId, depth) {
@@ -133,7 +180,11 @@ function resolveSlot(slot, groupStandings, byId, depth) {
     const group = m[2];
     if (seed === 3) return null;
     const gs = groupStandings[group];
-    if (!gs || !gs.allFinished) return null;
+    if (!gs) return null;
+    // Position may be mathematically clinched before all games are played.
+    const clinchedTeam = gs.clinched && gs.clinched[String(seed)];
+    if (clinchedTeam) return clinchedTeam;
+    if (!gs.allFinished) return null;
     return gs.sortedCodes[seed - 1] || null;
   }
   m = slot.match(/^W(\d+)$/);
