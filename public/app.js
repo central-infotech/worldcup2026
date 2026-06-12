@@ -61,6 +61,11 @@ function nameSpan(text) {
   return `<span class="team-name-text"${style}>${text}</span>`;
 }
 
+/* Placeholder text (e.g. "グループA/B/C/D/F3位", "第74試合勝者") – no scaling */
+function placeholderSpan(text) {
+  return `<span class="team-name-text placeholder-text">${text}</span>`;
+}
+
 /* ====== Placeholder slot label ====== */
 function slotLabelJa(slot) {
   if (!slot) return 'TBD';
@@ -83,34 +88,94 @@ function slotLabelJa(slot) {
    CSS pseudo-elements can draw the connector tree to the next round.
 */
 const LEFT_ROUNDS = [
-  { label: 'ラウンド32', cls: 'col-r32', pairs: [[74, 77], [73, 75], [83, 84], [81, 82]] },
-  { label: 'ラウンド16', cls: 'col-r16', pairs: [[89, 90], [93, 94]] },
-  { label: '準々決勝',   cls: 'col-qf',  pairs: [[97, 98]] },
-  { label: '準決勝',     cls: 'col-sf',  pairs: [[101]] },
+  { label: 'ベスト32', cls: 'col-r32', pairs: [[74, 77], [73, 75], [83, 84], [81, 82]] },
+  { label: 'ベスト16', cls: 'col-r16', pairs: [[89, 90], [93, 94]] },
+  { label: '準々決勝', cls: 'col-qf',  pairs: [[97, 98]] },
+  { label: '準決勝',   cls: 'col-sf',  pairs: [[101]] },
 ];
 
 const RIGHT_ROUNDS_INNER_OUT = [
-  { label: '準決勝',     cls: 'col-sf',  pairs: [[102]] },
-  { label: '準々決勝',   cls: 'col-qf',  pairs: [[99, 100]] },
-  { label: 'ラウンド16', cls: 'col-r16', pairs: [[91, 92], [95, 96]] },
-  { label: 'ラウンド32', cls: 'col-r32', pairs: [[76, 78], [79, 80], [86, 88], [85, 87]] },
+  { label: '準決勝',   cls: 'col-sf',  pairs: [[102]] },
+  { label: '準々決勝', cls: 'col-qf',  pairs: [[99, 100]] },
+  { label: 'ベスト16', cls: 'col-r16', pairs: [[91, 92], [95, 96]] },
+  { label: 'ベスト32', cls: 'col-r32', pairs: [[76, 78], [79, 80], [86, 88], [85, 87]] },
 ];
+
+/* ====== Group standings → bracket seed resolution ======
+   "1A"  → group A 1st-place team code (when group all finished)
+   "2B"  → group B 2nd-place team code (when group all finished)
+   "3(…)" → cross-group 3rd-place qualification: not resolved client-side
+              (scraper fills it from Wikipedia when known)
+   "W74" → winner of match 74, chained back to groups if needed
+   "L101" → loser of match 101 (3rd-place match source)
+*/
+function buildGroupStandings(data) {
+  const result = {};
+  for (const gk of Object.keys(data.groups)) {
+    const codes = data.groups[gk];
+    const matches = data.group_matches.filter((m) => m.group === gk);
+    const allFinished =
+      matches.length === 6 &&
+      matches.every((m) => m.home_score != null && m.away_score != null);
+    const standings = computeStandings(codes, matches);
+    standings.sort(rankCompare);
+    result[gk] = { allFinished, sortedCodes: standings.map((s) => s.code) };
+  }
+  return result;
+}
+
+function resolveSlot(slot, groupStandings, byId, depth) {
+  if (!slot || depth > 8) return null;
+  let m;
+  m = slot.match(/^(\d)([A-L])$/);
+  if (m) {
+    const seed = parseInt(m[1], 10);
+    const group = m[2];
+    if (seed === 3) return null;
+    const gs = groupStandings[group];
+    if (!gs || !gs.allFinished) return null;
+    return gs.sortedCodes[seed - 1] || null;
+  }
+  m = slot.match(/^W(\d+)$/);
+  if (m) {
+    const sm = byId[m[1]];
+    if (!sm || sm.home_score == null || sm.away_score == null) return null;
+    const home = sm.home || resolveSlot(sm.home_code, groupStandings, byId, depth + 1);
+    const away = sm.away || resolveSlot(sm.away_code, groupStandings, byId, depth + 1);
+    if (sm.home_score > sm.away_score) return home;
+    if (sm.away_score > sm.home_score) return away;
+    return null;
+  }
+  m = slot.match(/^L(\d+)$/);
+  if (m) {
+    const sm = byId[m[1]];
+    if (!sm || sm.home_score == null || sm.away_score == null) return null;
+    const home = sm.home || resolveSlot(sm.home_code, groupStandings, byId, depth + 1);
+    const away = sm.away || resolveSlot(sm.away_code, groupStandings, byId, depth + 1);
+    if (sm.home_score < sm.away_score) return home;
+    if (sm.away_score < sm.home_score) return away;
+    return null;
+  }
+  return null;
+}
 
 function renderBracket(data) {
   const container = document.getElementById('bracket');
   container.innerHTML = '';
   const byId = Object.fromEntries(data.knockout_matches.map((m) => [String(m.id), m]));
+  const groupStandings = buildGroupStandings(data);
+  const ctx = { data, byId, groupStandings };
 
   for (const round of LEFT_ROUNDS) {
-    container.appendChild(buildRoundColumn(round, byId, data, 'side-left'));
+    container.appendChild(buildRoundColumn(round, ctx, 'side-left'));
   }
-  container.appendChild(buildFinalColumn(byId, data));
+  container.appendChild(buildFinalColumn(ctx));
   for (const round of RIGHT_ROUNDS_INNER_OUT) {
-    container.appendChild(buildRoundColumn(round, byId, data, 'side-right'));
+    container.appendChild(buildRoundColumn(round, ctx, 'side-right'));
   }
 }
 
-function buildRoundColumn(round, byId, data, side) {
+function buildRoundColumn(round, ctx, side) {
   const col = document.createElement('div');
   col.className = `round ${round.cls} ${side}`;
 
@@ -128,9 +193,9 @@ function buildRoundColumn(round, byId, data, side) {
     let topAdv = false;
     let botAdv = false;
     pair.forEach((id, i) => {
-      const m = byId[String(id)];
+      const m = ctx.byId[String(id)];
       if (!m) return;
-      const cell = buildMatchCell(m, data);
+      const cell = buildMatchCell(m, ctx);
       const isFinished = m.status === 'finished';
       if (isFinished) {
         cell.classList.add('advancing');
@@ -155,7 +220,7 @@ function buildRoundColumn(round, byId, data, side) {
   return col;
 }
 
-function buildFinalColumn(byId, data) {
+function buildFinalColumn(ctx) {
   const col = document.createElement('div');
   col.className = 'round col-final';
 
@@ -166,8 +231,8 @@ function buildFinalColumn(byId, data) {
   const matchesEl = document.createElement('div');
   matchesEl.className = 'matches final-matches';
 
-  const finalMatch = byId['104'];
-  const thirdMatch = byId['103'];
+  const finalMatch = ctx.byId['104'];
+  const thirdMatch = ctx.byId['103'];
 
   const trophy = document.createElement('div');
   trophy.className = 'trophy';
@@ -175,7 +240,7 @@ function buildFinalColumn(byId, data) {
   matchesEl.appendChild(trophy);
 
   if (finalMatch) {
-    const cell = buildMatchCell(finalMatch, data, 'match-final');
+    const cell = buildMatchCell(finalMatch, ctx, 'match-final');
     if (finalMatch.status === 'finished') cell.classList.add('advancing');
     matchesEl.appendChild(cell);
   }
@@ -189,7 +254,7 @@ function buildFinalColumn(byId, data) {
   thirdSection.appendChild(thirdLabel);
 
   if (thirdMatch) {
-    const cell = buildMatchCell(thirdMatch, data, 'match-3rd');
+    const cell = buildMatchCell(thirdMatch, ctx, 'match-3rd');
     thirdSection.appendChild(cell);
   }
   matchesEl.appendChild(thirdSection);
@@ -198,9 +263,15 @@ function buildFinalColumn(byId, data) {
   return col;
 }
 
-function buildMatchCell(m, data, extraCls) {
+function buildMatchCell(m, ctx, extraCls) {
   const cell = document.createElement('div');
   cell.className = 'match-cell' + (extraCls ? ' ' + extraCls : '');
+
+  // Match number badge at top-left so users can locate "第74試合勝者" etc.
+  const num = document.createElement('div');
+  num.className = 'match-num';
+  num.textContent = '#' + m.id;
+  cell.appendChild(num);
 
   const dt = getJstParts(m.kickoff_utc);
   const date = document.createElement('div');
@@ -208,15 +279,22 @@ function buildMatchCell(m, data, extraCls) {
   date.innerHTML = `${dt.date}<br>${dt.time}`;
   cell.appendChild(date);
 
-  cell.appendChild(bracketTeamRow(m.home, m.home_code, m.home_score, m, data, 'home'));
-  cell.appendChild(bracketTeamRow(m.away, m.away_code, m.away_score, m, data, 'away'));
+  cell.appendChild(bracketTeamRow(m.home, m.home_code, m.home_score, m, ctx, 'home'));
+  cell.appendChild(bracketTeamRow(m.away, m.away_code, m.away_score, m, ctx, 'away'));
   return cell;
 }
 
-function bracketTeamRow(teamCode, slotCode, score, match, data, side) {
+function bracketTeamRow(teamCode, slotCode, score, match, ctx, side) {
   const row = document.createElement('div');
   row.className = 'match-team';
-  const team = teamCode ? data.teams[teamCode] : null;
+
+  // If the data file doesn't yet have a concrete team for this slot,
+  // try to derive it from completed groups / earlier knockout results.
+  let resolved = teamCode;
+  if (!resolved) {
+    resolved = resolveSlot(slotCode, ctx.groupStandings, ctx.byId, 0);
+  }
+  const team = resolved ? ctx.data.teams[resolved] : null;
 
   if (team) {
     let cls = '';
@@ -229,7 +307,7 @@ function bracketTeamRow(teamCode, slotCode, score, match, data, side) {
     row.innerHTML = `${flagImg(team, 'flag-sm')}<span class="team-name">${nameSpan(team.name_ja)}</span>${score != null ? `<span class="team-score">${score}</span>` : ''}`;
   } else {
     row.classList.add('placeholder');
-    row.innerHTML = `<span class="team-name">${nameSpan(slotLabelJa(slotCode))}</span>`;
+    row.innerHTML = `<span class="team-name">${placeholderSpan(slotLabelJa(slotCode))}</span>`;
   }
   return row;
 }

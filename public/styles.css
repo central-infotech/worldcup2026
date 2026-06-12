@@ -129,8 +129,18 @@ body {
   font-size: 0.78rem;
   position: relative;
   white-space: nowrap;
-  overflow: hidden;
   z-index: 2;
+}
+
+.match-num {
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: 0;
 }
 
 .match-cell.match-final {
@@ -345,6 +355,12 @@ body {
   font-size: calc(1em * var(--name-scale, 1));
   white-space: nowrap;
   vertical-align: middle;
+}
+
+/* Placeholder text (e.g. グループA/B/C/D/F3位, 第74試合勝者) – fixed readable size */
+.team-name-text.placeholder-text {
+  --name-scale: 1;
+  font-size: 0.72rem;
 }
 
 /* ====== Group cross tables ====== */
