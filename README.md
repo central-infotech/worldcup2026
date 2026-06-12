@@ -7,18 +7,30 @@
 
 ```
 worldcup2026/
-├── public/                      # Vercel に配信される静的ファイル
+├── public/                          # Vercel に配信される静的ファイル
 │   ├── index.html
 │   ├── styles.css
 │   ├── app.js
-│   └── tournament.json          # 唯一のデータソース（スクレイパが更新）
+│   └── tournament.json              # 唯一のデータソース（スクレイパが更新）
 ├── scripts/
-│   └── scrape_results.py        # Wikipedia から結果を取得
-├── .github/workflows/
-│   └── update-results.yml       # 全試合開始 +2:30 後にスクレイパを実行
+│   └── scrape_results.py            # Wikipedia から結果を取得
+├── .github/
+│   ├── workflows/
+│   │   └── update-results.yml       # 全試合開始 +2:30 後にスクレイパを実行
+│   └── workflows-staged/            # ワークフローを有効化する前のステージ領域
 ├── vercel.json
 └── README.md
 ```
+
+## GitHub Actions の有効化
+
+初回のみ、OAuth トークンの `workflow` スコープが必要なため、ワークフローファイルは
+`.github/workflows-staged/` に置かれている。以下のいずれかで `.github/workflows/` 配下に移動する。
+
+1. ローカルで `gh auth refresh -h github.com -s workflow` を実行してスコープを追加し、
+   `git mv .github/workflows-staged/update-results.yml .github/workflows/` で移動して push する。
+2. GitHub の Web UI で `.github/workflows-staged/update-results.yml` をリネームして
+   `.github/workflows/update-results.yml` にする。
 
 ## 仕様メモ
 
