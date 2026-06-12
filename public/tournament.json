@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-12T07:43:03Z",
+  "updated_at": "2026-06-12T22:07:38Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -445,9 +445,9 @@
       "venue": "BMO Field, Toronto",
       "home": "CAN",
       "away": "BIH",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-b-2",
