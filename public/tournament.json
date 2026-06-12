@@ -4,242 +4,290 @@
     "MEX": {
       "name_ja": "メキシコ",
       "name_en": "Mexico",
-      "flag": "🇲🇽"
+      "flag": "🇲🇽",
+      "iso2": "mx"
     },
     "RSA": {
       "name_ja": "南アフリカ",
       "name_en": "South Africa",
-      "flag": "🇿🇦"
+      "flag": "🇿🇦",
+      "iso2": "za"
     },
     "KOR": {
       "name_ja": "韓国",
       "name_en": "South Korea",
-      "flag": "🇰🇷"
+      "flag": "🇰🇷",
+      "iso2": "kr"
     },
     "CZE": {
       "name_ja": "チェコ",
       "name_en": "Czech Republic",
-      "flag": "🇨🇿"
+      "flag": "🇨🇿",
+      "iso2": "cz"
     },
     "CAN": {
       "name_ja": "カナダ",
       "name_en": "Canada",
-      "flag": "🇨🇦"
+      "flag": "🇨🇦",
+      "iso2": "ca"
     },
     "QAT": {
       "name_ja": "カタール",
       "name_en": "Qatar",
-      "flag": "🇶🇦"
+      "flag": "🇶🇦",
+      "iso2": "qa"
     },
     "SUI": {
       "name_ja": "スイス",
       "name_en": "Switzerland",
-      "flag": "🇨🇭"
+      "flag": "🇨🇭",
+      "iso2": "ch"
     },
     "BIH": {
       "name_ja": "ボスニア・ヘルツェゴビナ",
       "name_en": "Bosnia and Herzegovina",
-      "flag": "🇧🇦"
+      "flag": "🇧🇦",
+      "iso2": "ba"
     },
     "BRA": {
       "name_ja": "ブラジル",
       "name_en": "Brazil",
-      "flag": "🇧🇷"
+      "flag": "🇧🇷",
+      "iso2": "br"
     },
     "MAR": {
       "name_ja": "モロッコ",
       "name_en": "Morocco",
-      "flag": "🇲🇦"
+      "flag": "🇲🇦",
+      "iso2": "ma"
     },
     "HAI": {
       "name_ja": "ハイチ",
       "name_en": "Haiti",
-      "flag": "🇭🇹"
+      "flag": "🇭🇹",
+      "iso2": "ht"
     },
     "SCO": {
       "name_ja": "スコットランド",
       "name_en": "Scotland",
-      "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+      "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "iso2": "gb-sct"
     },
     "USA": {
       "name_ja": "アメリカ",
       "name_en": "United States",
-      "flag": "🇺🇸"
+      "flag": "🇺🇸",
+      "iso2": "us"
     },
     "PAR": {
       "name_ja": "パラグアイ",
       "name_en": "Paraguay",
-      "flag": "🇵🇾"
+      "flag": "🇵🇾",
+      "iso2": "py"
     },
     "AUS": {
       "name_ja": "オーストラリア",
       "name_en": "Australia",
-      "flag": "🇦🇺"
+      "flag": "🇦🇺",
+      "iso2": "au"
     },
     "TUR": {
       "name_ja": "トルコ",
       "name_en": "Turkey",
-      "flag": "🇹🇷"
+      "flag": "🇹🇷",
+      "iso2": "tr"
     },
     "GER": {
       "name_ja": "ドイツ",
       "name_en": "Germany",
-      "flag": "🇩🇪"
+      "flag": "🇩🇪",
+      "iso2": "de"
     },
     "CUW": {
       "name_ja": "キュラソー",
       "name_en": "Curaçao",
-      "flag": "🇨🇼"
+      "flag": "🇨🇼",
+      "iso2": "cw"
     },
     "CIV": {
       "name_ja": "コートジボワール",
       "name_en": "Ivory Coast",
-      "flag": "🇨🇮"
+      "flag": "🇨🇮",
+      "iso2": "ci"
     },
     "ECU": {
       "name_ja": "エクアドル",
       "name_en": "Ecuador",
-      "flag": "🇪🇨"
+      "flag": "🇪🇨",
+      "iso2": "ec"
     },
     "NED": {
       "name_ja": "オランダ",
       "name_en": "Netherlands",
-      "flag": "🇳🇱"
+      "flag": "🇳🇱",
+      "iso2": "nl"
     },
     "JPN": {
       "name_ja": "日本",
       "name_en": "Japan",
-      "flag": "🇯🇵"
+      "flag": "🇯🇵",
+      "iso2": "jp"
     },
     "TUN": {
       "name_ja": "チュニジア",
       "name_en": "Tunisia",
-      "flag": "🇹🇳"
+      "flag": "🇹🇳",
+      "iso2": "tn"
     },
     "SWE": {
       "name_ja": "スウェーデン",
       "name_en": "Sweden",
-      "flag": "🇸🇪"
+      "flag": "🇸🇪",
+      "iso2": "se"
     },
     "BEL": {
       "name_ja": "ベルギー",
       "name_en": "Belgium",
-      "flag": "🇧🇪"
+      "flag": "🇧🇪",
+      "iso2": "be"
     },
     "EGY": {
       "name_ja": "エジプト",
       "name_en": "Egypt",
-      "flag": "🇪🇬"
+      "flag": "🇪🇬",
+      "iso2": "eg"
     },
     "IRN": {
       "name_ja": "イラン",
       "name_en": "Iran",
-      "flag": "🇮🇷"
+      "flag": "🇮🇷",
+      "iso2": "ir"
     },
     "NZL": {
       "name_ja": "ニュージーランド",
       "name_en": "New Zealand",
-      "flag": "🇳🇿"
+      "flag": "🇳🇿",
+      "iso2": "nz"
     },
     "ESP": {
       "name_ja": "スペイン",
       "name_en": "Spain",
-      "flag": "🇪🇸"
+      "flag": "🇪🇸",
+      "iso2": "es"
     },
     "CPV": {
       "name_ja": "カーボベルデ",
       "name_en": "Cape Verde",
-      "flag": "🇨🇻"
+      "flag": "🇨🇻",
+      "iso2": "cv"
     },
     "KSA": {
       "name_ja": "サウジアラビア",
       "name_en": "Saudi Arabia",
-      "flag": "🇸🇦"
+      "flag": "🇸🇦",
+      "iso2": "sa"
     },
     "URU": {
       "name_ja": "ウルグアイ",
       "name_en": "Uruguay",
-      "flag": "🇺🇾"
+      "flag": "🇺🇾",
+      "iso2": "uy"
     },
     "FRA": {
       "name_ja": "フランス",
       "name_en": "France",
-      "flag": "🇫🇷"
+      "flag": "🇫🇷",
+      "iso2": "fr"
     },
     "SEN": {
       "name_ja": "セネガル",
       "name_en": "Senegal",
-      "flag": "🇸🇳"
+      "flag": "🇸🇳",
+      "iso2": "sn"
     },
     "IRQ": {
       "name_ja": "イラク",
       "name_en": "Iraq",
-      "flag": "🇮🇶"
+      "flag": "🇮🇶",
+      "iso2": "iq"
     },
     "NOR": {
       "name_ja": "ノルウェー",
       "name_en": "Norway",
-      "flag": "🇳🇴"
+      "flag": "🇳🇴",
+      "iso2": "no"
     },
     "ARG": {
       "name_ja": "アルゼンチン",
       "name_en": "Argentina",
-      "flag": "🇦🇷"
+      "flag": "🇦🇷",
+      "iso2": "ar"
     },
     "ALG": {
       "name_ja": "アルジェリア",
       "name_en": "Algeria",
-      "flag": "🇩🇿"
+      "flag": "🇩🇿",
+      "iso2": "dz"
     },
     "AUT": {
       "name_ja": "オーストリア",
       "name_en": "Austria",
-      "flag": "🇦🇹"
+      "flag": "🇦🇹",
+      "iso2": "at"
     },
     "JOR": {
       "name_ja": "ヨルダン",
       "name_en": "Jordan",
-      "flag": "🇯🇴"
+      "flag": "🇯🇴",
+      "iso2": "jo"
     },
     "POR": {
       "name_ja": "ポルトガル",
       "name_en": "Portugal",
-      "flag": "🇵🇹"
+      "flag": "🇵🇹",
+      "iso2": "pt"
     },
     "COD": {
       "name_ja": "コンゴ",
       "name_en": "DR Congo",
-      "flag": "🇨🇩"
+      "flag": "🇨🇩",
+      "iso2": "cd"
     },
     "UZB": {
       "name_ja": "ウズベキスタン",
       "name_en": "Uzbekistan",
-      "flag": "🇺🇿"
+      "flag": "🇺🇿",
+      "iso2": "uz"
     },
     "COL": {
       "name_ja": "コロンビア",
       "name_en": "Colombia",
-      "flag": "🇨🇴"
+      "flag": "🇨🇴",
+      "iso2": "co"
     },
     "ENG": {
       "name_ja": "イングランド",
       "name_en": "England",
-      "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+      "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "iso2": "gb-eng"
     },
     "CRO": {
       "name_ja": "クロアチア",
       "name_en": "Croatia",
-      "flag": "🇭🇷"
+      "flag": "🇭🇷",
+      "iso2": "hr"
     },
     "GHA": {
       "name_ja": "ガーナ",
       "name_en": "Ghana",
-      "flag": "🇬🇭"
+      "flag": "🇬🇭",
+      "iso2": "gh"
     },
     "PAN": {
       "name_ja": "パナマ",
       "name_en": "Panama",
-      "flag": "🇵🇦"
+      "flag": "🇵🇦",
+      "iso2": "pa"
     }
   },
   "groups": {

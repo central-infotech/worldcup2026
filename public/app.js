@@ -7,48 +7,171 @@
     return;
   }
 
-  // header updated_at
   if (data.updated_at) {
     const d = new Date(data.updated_at);
     document.getElementById('updated').textContent =
       '最終更新: ' + formatJstDateTime(d);
   }
 
+  renderBracket(data);
   renderGroups(data);
-  renderKnockout(data);
 })();
 
+/* ====== Time formatting (JST) ====== */
 function formatJstDateTime(date) {
-  const fmt = new Intl.DateTimeFormat('ja-JP', {
+  return new Intl.DateTimeFormat('ja-JP', {
     timeZone: 'Asia/Tokyo',
     month: 'numeric',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
-  });
-  return fmt.format(date);
+  }).format(date);
 }
 
-function formatJstShort(isoUtc) {
+function getJstParts(isoUtc) {
   const d = new Date(isoUtc);
-  const fmt = new Intl.DateTimeFormat('ja-JP', {
+  const parts = new Intl.DateTimeFormat('ja-JP', {
     timeZone: 'Asia/Tokyo',
     month: 'numeric',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
-  });
-  // "6/14 23:00"
-  const parts = fmt.formatToParts(d);
+  }).formatToParts(d);
   const m = parts.find((p) => p.type === 'month').value;
   const day = parts.find((p) => p.type === 'day').value;
   const hh = parts.find((p) => p.type === 'hour').value;
   const mm = parts.find((p) => p.type === 'minute').value;
-  return `${m}/${day} ${hh}:${mm}`;
+  return { date: `${m}/${day}`, time: `${hh}:${mm}` };
 }
 
+/* ====== Flag image ====== */
+function flagImg(team, sizeClass) {
+  if (!team) return '';
+  const cls = sizeClass ? ' ' + sizeClass : '';
+  return `<img class="flag-img${cls}" src="flags/${team.iso2}.png" alt="" loading="lazy">`;
+}
+
+/* ====== Placeholder slot label (e.g. "1A" -> "グループA1位") ====== */
+function slotLabelJa(slot) {
+  if (!slot) return 'TBD';
+  // 1A / 2B / 3(A/B/C/D/F) / W73 / L101
+  let m;
+  m = slot.match(/^(\d)([A-L])$/);
+  if (m) return `グループ${m[2]}${m[1]}位`;
+  m = slot.match(/^3\(([A-L/]+)\)$/);
+  if (m) return `グループ${m[1]}3位`;
+  m = slot.match(/^W(\d+)$/);
+  if (m) return `第${m[1]}試合勝者`;
+  m = slot.match(/^L(\d+)$/);
+  if (m) return `第${m[1]}試合敗者`;
+  return slot;
+}
+
+/* ====== Bracket rendering ====== */
+const BRACKET_LAYOUT = {
+  // Left side, top -> bottom (matches that feed each SF half)
+  leftR32: [74, 77, 73, 75, 83, 84, 81, 82],
+  leftR16: [89, 90, 93, 94],
+  leftQf:  [97, 98],
+  leftSf:  [101],
+
+  // Right side
+  rightR32: [76, 78, 79, 80, 86, 88, 85, 87],
+  rightR16: [91, 92, 95, 96],
+  rightQf:  [99, 100],
+  rightSf:  [102],
+};
+
+function renderBracket(data) {
+  const container = document.getElementById('bracket');
+  const byId = Object.fromEntries(
+    data.knockout_matches.map((m) => [String(m.id), m]),
+  );
+
+  const cols = [
+    { label: 'ラウンド32', cls: 'col-r32', ids: BRACKET_LAYOUT.leftR32 },
+    { label: 'ラウンド16', cls: 'col-r16', ids: BRACKET_LAYOUT.leftR16 },
+    { label: '準々決勝', cls: 'col-qf',  ids: BRACKET_LAYOUT.leftQf },
+    { label: '準決勝',   cls: 'col-sf',  ids: BRACKET_LAYOUT.leftSf },
+    { label: '決勝',     cls: 'col-final', ids: ['__final__'] },
+    { label: '準決勝',   cls: 'col-sf',  ids: BRACKET_LAYOUT.rightSf },
+    { label: '準々決勝', cls: 'col-qf',  ids: BRACKET_LAYOUT.rightQf },
+    { label: 'ラウンド16', cls: 'col-r16', ids: BRACKET_LAYOUT.rightR16 },
+    { label: 'ラウンド32', cls: 'col-r32', ids: BRACKET_LAYOUT.rightR32 },
+  ];
+
+  for (const col of cols) {
+    const colEl = document.createElement('div');
+    colEl.className = 'bracket-col ' + col.cls;
+    const lbl = document.createElement('div');
+    lbl.className = 'col-label';
+    lbl.textContent = col.label;
+    colEl.appendChild(lbl);
+    for (const id of col.ids) {
+      if (id === '__final__') {
+        // final + 3rd
+        const finalMatch = byId['104'];
+        const thirdMatch = byId['103'];
+        if (finalMatch) colEl.appendChild(buildMatchCell(finalMatch, data, 'match-final'));
+        const trophy = document.createElement('div');
+        trophy.className = 'trophy';
+        trophy.textContent = '🏆';
+        colEl.appendChild(trophy);
+        const thirdLbl = document.createElement('div');
+        thirdLbl.className = 'third-label';
+        thirdLbl.textContent = '3位決定戦';
+        colEl.appendChild(thirdLbl);
+        if (thirdMatch) colEl.appendChild(buildMatchCell(thirdMatch, data, 'match-3rd'));
+      } else {
+        const m = byId[String(id)];
+        if (m) colEl.appendChild(buildMatchCell(m, data));
+      }
+    }
+    container.appendChild(colEl);
+  }
+}
+
+function buildMatchCell(m, data, extraCls) {
+  const cell = document.createElement('div');
+  cell.className = 'match-cell' + (extraCls ? ' ' + extraCls : '');
+
+  const dt = getJstParts(m.kickoff_utc);
+  const date = document.createElement('div');
+  date.className = 'match-date';
+  date.innerHTML = `${dt.date}<br>${dt.time}`;
+  cell.appendChild(date);
+
+  // home team
+  cell.appendChild(bracketTeamRow(m.home, m.home_code, m.home_score, m, data, 'home'));
+  // away team
+  cell.appendChild(bracketTeamRow(m.away, m.away_code, m.away_score, m, data, 'away'));
+  return cell;
+}
+
+function bracketTeamRow(teamCode, slotCode, score, match, data, side) {
+  const row = document.createElement('div');
+  row.className = 'match-team';
+  const team = teamCode ? data.teams[teamCode] : null;
+
+  if (team) {
+    let cls = '';
+    if (match.home_score != null && match.away_score != null) {
+      const hs = match.home_score, as = match.away_score;
+      if (side === 'home') cls = hs > as ? 'winner' : (hs < as ? 'loser' : '');
+      else cls = as > hs ? 'winner' : (as < hs ? 'loser' : '');
+    }
+    if (cls) row.classList.add(cls);
+    row.innerHTML = `${flagImg(team, 'flag-sm')}<span class="team-name">${team.name_ja}</span>${score != null ? `<span class="team-score">${score}</span>` : ''}`;
+  } else {
+    row.classList.add('placeholder');
+    row.innerHTML = `<span class="team-name">${slotLabelJa(slotCode)}</span>`;
+  }
+  return row;
+}
+
+/* ====== Group cross-tables ====== */
 function renderGroups(data) {
   const container = document.getElementById('groups');
   const groupKeys = Object.keys(data.groups);
@@ -62,16 +185,9 @@ function renderGroups(data) {
 
     const teamCodes = data.groups[gk];
     const matches = data.group_matches.filter((m) => m.group === gk);
-
-    // compute standings
     const standings = computeStandings(teamCodes, matches);
-
-    // sort teams by standings ranking
     const sortedCodes = standings.slice().sort(rankCompare).map((s) => s.code);
-
-    // build cross table
-    const table = buildCrossTable(sortedCodes, data.teams, matches, standings);
-    card.appendChild(table);
+    card.appendChild(buildCrossTable(sortedCodes, data.teams, matches, standings));
     container.appendChild(card);
   }
 }
@@ -93,9 +209,7 @@ function computeStandings(teamCodes, matches) {
     else if (m.home_score < m.away_score) { a.W++; h.L++; a.Pts += 3; }
     else { h.D++; a.D++; h.Pts++; a.Pts++; }
   }
-  for (const c of teamCodes) {
-    stats[c].GD = stats[c].GF - stats[c].GA;
-  }
+  for (const c of teamCodes) stats[c].GD = stats[c].GF - stats[c].GA;
   return teamCodes.map((c) => stats[c]);
 }
 
@@ -109,32 +223,26 @@ function rankCompare(a, b) {
 function buildCrossTable(teamCodes, teamsRef, matches, standings) {
   const standingsByCode = Object.fromEntries(standings.map((s) => [s.code, s]));
   const matchByPair = {};
-  for (const m of matches) {
-    matchByPair[m.home + '|' + m.away] = m;
-  }
+  for (const m of matches) matchByPair[m.home + '|' + m.away] = m;
 
   const table = document.createElement('table');
   table.className = 'cross-table';
 
-  // header
   const thead = document.createElement('thead');
   const hr = document.createElement('tr');
   hr.appendChild(th(''));
-  for (const c of teamCodes) {
-    hr.appendChild(th(teamsRef[c].flag));
-  }
+  for (const c of teamCodes) hr.appendChild(th(flagImg(teamsRef[c], 'flag-sm')));
   hr.appendChild(th('勝点'));
   hr.appendChild(th('得失'));
   thead.appendChild(hr);
   table.appendChild(thead);
 
-  // body
   const tbody = document.createElement('tbody');
   for (const rowCode of teamCodes) {
     const tr = document.createElement('tr');
     const nameTd = document.createElement('td');
-    nameTd.className = 'team-name';
-    nameTd.innerHTML = `<span class="flag">${teamsRef[rowCode].flag}</span>${teamsRef[rowCode].name_ja}`;
+    nameTd.className = 'team-name-cell';
+    nameTd.innerHTML = `${flagImg(teamsRef[rowCode], 'flag-sm')}${teamsRef[rowCode].name_ja}`;
     tr.appendChild(nameTd);
 
     for (const colCode of teamCodes) {
@@ -143,28 +251,21 @@ function buildCrossTable(teamCodes, teamsRef, matches, standings) {
         td.className = 'self-cell';
         td.textContent = '—';
       } else {
-        // Find the match between rowCode and colCode (regardless of home/away)
         let m = matchByPair[rowCode + '|' + colCode];
         let rowIsHome = true;
-        if (!m) {
-          m = matchByPair[colCode + '|' + rowCode];
-          rowIsHome = false;
-        }
+        if (!m) { m = matchByPair[colCode + '|' + rowCode]; rowIsHome = false; }
         if (m) {
           if (m.home_score != null && m.away_score != null) {
             td.innerHTML = formatResult(m, rowIsHome);
           } else {
-            const span = document.createElement('span');
-            span.className = 'scheduled';
-            span.textContent = formatJstShort(m.kickoff_utc);
-            td.appendChild(span);
+            const parts = getJstParts(m.kickoff_utc);
+            td.innerHTML = `<span class="scheduled"><span class="date">${parts.date}</span><span class="time">${parts.time}</span></span>`;
           }
         }
       }
       tr.appendChild(td);
     }
 
-    // stats
     const s = standingsByCode[rowCode];
     const ptsTd = document.createElement('td');
     ptsTd.className = 'stat-cell';
@@ -182,14 +283,13 @@ function buildCrossTable(teamCodes, teamsRef, matches, standings) {
   return table;
 }
 
-function th(text) {
+function th(html) {
   const e = document.createElement('th');
-  e.textContent = text;
+  e.innerHTML = html;
   return e;
 }
 
 function formatResult(m, rowIsHome) {
-  // From the row team's perspective, show "○3-1×" / "△1-1△" / "×0-1○"
   const rowScore = rowIsHome ? m.home_score : m.away_score;
   const colScore = rowIsHome ? m.away_score : m.home_score;
   let rowMark, colMark;
@@ -197,77 +297,4 @@ function formatResult(m, rowIsHome) {
   else if (rowScore < colScore) { rowMark = '<span class="mark-loss">×</span>'; colMark = '<span class="mark-win">○</span>'; }
   else { rowMark = '<span class="mark-draw">△</span>'; colMark = '<span class="mark-draw">△</span>'; }
   return `<span class="result">${rowMark}${rowScore}-${colScore}${colMark}</span>`;
-}
-
-function renderKnockout(data) {
-  const container = document.getElementById('knockout');
-  const rounds = [
-    { key: 'R32', label: 'ラウンド32' },
-    { key: 'R16', label: 'ラウンド16' },
-    { key: 'QF',  label: '準々決勝' },
-    { key: 'SF',  label: '準決勝' },
-    { key: '3RD', label: '3位決定戦' },
-    { key: 'F',   label: '決勝' },
-  ];
-  for (const r of rounds) {
-    const ms = data.knockout_matches.filter((m) => m.round === r.key);
-    if (!ms.length) continue;
-    const card = document.createElement('div');
-    card.className = 'round-card';
-    const h = document.createElement('h3');
-    h.textContent = r.label;
-    card.appendChild(h);
-    for (const m of ms) {
-      card.appendChild(renderKnockoutMatch(m, data));
-    }
-    container.appendChild(card);
-  }
-}
-
-function renderKnockoutMatch(m, data) {
-  const row = document.createElement('div');
-  row.className = 'match-row';
-
-  const meta = document.createElement('div');
-  meta.className = 'match-meta';
-  meta.textContent = `${formatJstShort(m.kickoff_utc)} ・ ${m.venue || ''}`;
-  row.appendChild(meta);
-
-  const line = document.createElement('div');
-  line.className = 'match-line';
-
-  const homeName = labelForKnockoutSide(m.home, m.home_code, data);
-  const awayName = labelForKnockoutSide(m.away, m.away_code, data);
-
-  const home = document.createElement('div');
-  home.className = 'match-team home';
-  home.innerHTML = homeName;
-
-  const away = document.createElement('div');
-  away.className = 'match-team away';
-  away.innerHTML = awayName;
-
-  const score = document.createElement('div');
-  if (m.home_score != null && m.away_score != null) {
-    score.className = 'match-score';
-    score.textContent = `${m.home_score} - ${m.away_score}`;
-  } else {
-    score.className = 'match-score tbd';
-    score.textContent = 'vs';
-  }
-
-  line.appendChild(home);
-  line.appendChild(score);
-  line.appendChild(away);
-  row.appendChild(line);
-  return row;
-}
-
-function labelForKnockoutSide(teamCode, slot, data) {
-  if (teamCode && data.teams[teamCode]) {
-    const t = data.teams[teamCode];
-    return `<span class="flag">${t.flag}</span>${t.name_ja}`;
-  }
-  // slot is something like "1A" or "W73"
-  return `<span style="color: var(--text-dim)">${slot || 'TBD'}</span>`;
 }
