@@ -93,7 +93,7 @@ body {
 .round.col-r16 { flex-basis: 140px; min-width: 140px; }
 .round.col-qf  { flex-basis: 140px; min-width: 140px; }
 .round.col-sf  { flex-basis: 140px; min-width: 140px; }
-.round.col-final { flex-basis: 200px; min-width: 200px; }
+.round.col-final { flex-basis: 150px; min-width: 150px; }
 
 .round h3 {
   text-align: center;
@@ -302,6 +302,10 @@ body {
   flex: 1;
   display: grid;
   grid-template-rows: 1fr auto 1fr;
+  /* Explicit 1fr column — without this the implicit auto column shrinks
+     to fit the (nowrap) cell content, which made Final/3rd narrower than
+     other boxes and left a gap between the SF→Final line and the box. */
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas: "top" "main" "bottom";
   justify-items: stretch;
   align-items: stretch;
