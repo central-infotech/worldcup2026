@@ -438,8 +438,9 @@ body {
   table-layout: fixed;
 }
 
-.cross-table col.col-name { width: 130px; }
-.cross-table col.col-stat { width: 36px; }
+.cross-table col.col-rank { width: 26px; }
+.cross-table col.col-name { width: 120px; }
+.cross-table col.col-stat { width: 34px; }
 
 .cross-table th,
 .cross-table td {
@@ -473,6 +474,15 @@ body {
 }
 
 .cross-table .self-cell { background: #243352; }
+
+.cross-table .rank-cell {
+  background: var(--bg-2);
+  font-weight: 700;
+  color: var(--accent);
+  text-align: center;
+  font-size: 0.82rem;
+  font-feature-settings: "tnum";
+}
 
 .cross-table .stat-cell {
   background: #1c2944;

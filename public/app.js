@@ -406,8 +406,10 @@ function renderGroups(data) {
     const teamCodes = data.groups[gk];
     const matches = data.group_matches.filter((m) => m.group === gk);
     const standings = computeStandings(teamCodes, matches);
-    const sortedCodes = standings.slice().sort(rankCompare).map((s) => s.code);
-    card.appendChild(buildCrossTable(sortedCodes, data.teams, matches, standings));
+    const sortedStandings = standings.slice().sort(rankCompare);
+    const sortedCodes = sortedStandings.map((s) => s.code);
+    const ranks = computeRanks(sortedStandings);
+    card.appendChild(buildCrossTable(sortedCodes, data.teams, matches, standings, ranks));
     container.appendChild(card);
   }
 }
@@ -440,7 +442,22 @@ function rankCompare(a, b) {
   return 0;
 }
 
-function buildCrossTable(teamCodes, teamsRef, matches, standings) {
+/* 1224 standard competition ranking: tied teams share a number; the next
+   distinct team takes the position they'd have without the tie.
+   e.g. nothing played yet (all stats zero) → every team ranked 1. */
+function computeRanks(sortedStandings) {
+  const ranks = {};
+  let currentRank = 1;
+  for (let i = 0; i < sortedStandings.length; i++) {
+    if (i > 0 && rankCompare(sortedStandings[i - 1], sortedStandings[i]) !== 0) {
+      currentRank = i + 1;
+    }
+    ranks[sortedStandings[i].code] = currentRank;
+  }
+  return ranks;
+}
+
+function buildCrossTable(teamCodes, teamsRef, matches, standings, ranks) {
   const standingsByCode = Object.fromEntries(standings.map((s) => [s.code, s]));
   const matchByPair = {};
   for (const m of matches) matchByPair[m.home + '|' + m.away] = m;
@@ -449,6 +466,7 @@ function buildCrossTable(teamCodes, teamsRef, matches, standings) {
   table.className = 'cross-table';
 
   const colgroup = document.createElement('colgroup');
+  const cRank = document.createElement('col'); cRank.className = 'col-rank'; colgroup.appendChild(cRank);
   const cName = document.createElement('col'); cName.className = 'col-name'; colgroup.appendChild(cName);
   for (let i = 0; i < teamCodes.length; i++) colgroup.appendChild(document.createElement('col'));
   const cPts = document.createElement('col'); cPts.className = 'col-stat'; colgroup.appendChild(cPts);
@@ -457,7 +475,8 @@ function buildCrossTable(teamCodes, teamsRef, matches, standings) {
 
   const thead = document.createElement('thead');
   const hr = document.createElement('tr');
-  hr.appendChild(th(''));
+  hr.appendChild(th(''));   // rank column header
+  hr.appendChild(th(''));   // team-name column header
   for (const c of teamCodes) hr.appendChild(th(flagImg(teamsRef[c], 'flag-sm')));
   hr.appendChild(th('勝点'));
   hr.appendChild(th('得失'));
@@ -467,6 +486,12 @@ function buildCrossTable(teamCodes, teamsRef, matches, standings) {
   const tbody = document.createElement('tbody');
   for (const rowCode of teamCodes) {
     const tr = document.createElement('tr');
+
+    const rankTd = document.createElement('td');
+    rankTd.className = 'rank-cell';
+    rankTd.textContent = ranks[rowCode];
+    tr.appendChild(rankTd);
+
     const nameTd = document.createElement('td');
     nameTd.className = 'team-name-cell';
     nameTd.innerHTML = `${flagImg(teamsRef[rowCode], 'flag-sm')}${nameSpan(teamsRef[rowCode].name_ja)}`;
