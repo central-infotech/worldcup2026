@@ -307,6 +307,12 @@ function buildFinalColumn(ctx) {
   const finalMatch = ctx.byId['104'];
   const thirdMatch = ctx.byId['103'];
 
+  // Light up each SF→Final L-line once its source SF has a winner.
+  const leftSf = ctx.byId['101'];
+  const rightSf = ctx.byId['102'];
+  if (leftSf && leftSf.status === 'finished') matchesEl.classList.add('has-left-advancing');
+  if (rightSf && rightSf.status === 'finished') matchesEl.classList.add('has-right-advancing');
+
   const trophy = document.createElement('div');
   trophy.className = 'trophy';
   trophy.textContent = '🏆';

@@ -228,13 +228,14 @@ body {
   transform: translateY(-50%);
   z-index: 1;
 }
-/* SF (single) on the left: line spans full gap to FINAL */
+/* SF (single) on the left: only half the gap — the L-shape pseudo on
+   .final-matches draws the remaining "climb up" segment to the Final box. */
 .side-left .pair-group.single .match-cell::after {
   content: "";
   position: absolute;
   top: 50%;
-  right: calc(-1 * var(--gap));
-  width: var(--gap);
+  right: calc(-1 * var(--gap) / 2);
+  width: calc(var(--gap) / 2);
   height: var(--line-w);
   background: var(--line);
   transform: translateY(-50%);
@@ -278,8 +279,8 @@ body {
   content: "";
   position: absolute;
   top: 50%;
-  left: calc(-1 * var(--gap));
-  width: var(--gap);
+  left: calc(-1 * var(--gap) / 2);
+  width: calc(var(--gap) / 2);
   height: var(--line-w);
   background: var(--line);
   transform: translateY(-50%);
@@ -297,48 +298,82 @@ body {
 .pair-group.both-advancing::before { background: var(--win-line) !important; }
 .pair-group.has-advancing::after { background: var(--win-line) !important; }
 
-/* ===== Final column: Final cell at vertical center, 3rd place below ===== */
+/* ===== Final column =====
+   Final box sits at ~25% from the top so the SF→Final connectors visibly
+   climb upward (instead of running flat at the same height as the SFs).
+   Trophy floats just above Final, 3rd-place match drops below it. */
 .col-final .final-matches {
   flex: 1;
-  display: grid;
-  grid-template-rows: 1fr auto 1fr;
-  /* Explicit 1fr column — without this the implicit auto column shrinks
-     to fit the (nowrap) cell content, which made Final/3rd narrower than
-     other boxes and left a gap between the SF→Final line and the box. */
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "top" "main" "bottom";
-  justify-items: stretch;
-  align-items: stretch;
+  position: relative;
+  display: block;
 }
 
 .col-final .trophy {
-  grid-area: top;
-  align-self: end;
-  justify-self: center;
+  position: absolute;
+  top: calc(25% - 76px);
+  left: 0;
+  right: 0;
+  text-align: center;
   font-size: 2.4rem;
-  margin-bottom: 4px;
   line-height: 1;
 }
 
 .col-final .match-final {
-  grid-area: main;
+  position: absolute;
+  top: 25%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
 }
 
 .col-final .third-section {
-  grid-area: bottom;
-  align-self: start;
-  margin-top: 18px;
+  position: absolute;
+  top: calc(25% + 70px);
+  left: 0;
+  right: 0;
   text-align: center;
 }
 
-.col-final .third-label {
+.col-final .third-section .third-label {
   font-size: 0.78rem;
   color: var(--text-dim);
   margin-bottom: 6px;
 }
 
-.col-final .match-3rd {
-  display: block;
+/* L-shape connectors that ladder up from each SF (50%) to the Final (25%).
+   Border-top draws the horizontal arm at Final level; border-left/right
+   draws the vertical climb down to SF level. */
+.col-final .final-matches::before,
+.col-final .final-matches::after {
+  content: "";
+  position: absolute;
+  top: 25%;
+  width: calc(var(--gap) / 2);
+  height: 25%;
+  border-top: var(--line-w) solid var(--line);
+  z-index: 1;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.col-final .final-matches::before {
+  left: calc(-1 * var(--gap) / 2);
+  border-left: var(--line-w) solid var(--line);
+}
+
+.col-final .final-matches::after {
+  right: calc(-1 * var(--gap) / 2);
+  border-right: var(--line-w) solid var(--line);
+}
+
+.col-final .final-matches.has-left-advancing::before {
+  border-top-color: var(--win-line);
+  border-left-color: var(--win-line);
+}
+
+.col-final .final-matches.has-right-advancing::after {
+  border-top-color: var(--win-line);
+  border-right-color: var(--win-line);
 }
 
 /* Flag images */
