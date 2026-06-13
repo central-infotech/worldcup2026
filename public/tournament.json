@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-12T22:07:38Z",
+  "updated_at": "2026-06-13T05:04:54Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -589,9 +589,9 @@
       "venue": "SoFi Stadium, Inglewood",
       "home": "USA",
       "away": "PAR",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 4,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-d-2",
