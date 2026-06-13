@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-13T05:04:54Z",
+  "updated_at": "2026-06-13T22:37:30Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -457,9 +457,9 @@
       "venue": "Levi's Stadium, Santa Clara",
       "home": "QAT",
       "away": "SUI",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-b-3",
