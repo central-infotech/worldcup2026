@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-15T02:00:38Z",
+  "updated_at": "2026-06-15T08:36:56Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -745,9 +745,9 @@
       "venue": "Estadio BBVA, Guadalupe",
       "home": "SWE",
       "away": "TUN",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 5,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-f-3",
