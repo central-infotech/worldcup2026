@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-16T08:28:44Z",
+  "updated_at": "2026-06-16T21:27:03Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -949,9 +949,9 @@
       "venue": "MetLife Stadium, East Rutherford",
       "home": "FRA",
       "away": "SEN",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 3,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-i-2",
