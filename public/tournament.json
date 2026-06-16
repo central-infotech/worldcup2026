@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-15T22:34:29Z",
+  "updated_at": "2026-06-16T02:09:02Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -889,9 +889,9 @@
       "venue": "Hard Rock Stadium, Miami Gardens",
       "home": "KSA",
       "away": "URU",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-h-3",
