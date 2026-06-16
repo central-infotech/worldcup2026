@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-16T02:09:02Z",
+  "updated_at": "2026-06-16T08:28:44Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -817,9 +817,9 @@
       "venue": "SoFi Stadium, Inglewood",
       "home": "IRN",
       "away": "NZL",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 2,
+      "status": "finished"
     },
     {
       "id": "g-g-3",
