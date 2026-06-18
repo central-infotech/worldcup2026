@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-17T22:21:12Z",
+  "updated_at": "2026-06-18T05:19:13Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1105,9 +1105,9 @@
       "venue": "Estadio Azteca, Mexico City",
       "home": "UZB",
       "away": "COL",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 3,
+      "status": "finished"
     },
     {
       "id": "g-k-3",
@@ -1177,9 +1177,9 @@
       "venue": "BMO Field, Toronto",
       "home": "GHA",
       "away": "PAN",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "g-l-3",
