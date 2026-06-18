@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-18T05:19:13Z",
+  "updated_at": "2026-06-18T21:03:19Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -397,9 +397,9 @@
       "venue": "Mercedes-Benz Stadium, Atlanta",
       "home": "CZE",
       "away": "RSA",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-a-4",
@@ -469,9 +469,9 @@
       "venue": "SoFi Stadium, Inglewood",
       "home": "SUI",
       "away": "BIH",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 4,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-b-4",
