@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-19T02:18:56Z",
+  "updated_at": "2026-06-19T07:40:10Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -409,9 +409,9 @@
       "venue": "Estadio Akron, Zapopan",
       "home": "MEX",
       "away": "KOR",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "g-a-5",
