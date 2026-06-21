@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-21T06:00:56Z",
+  "updated_at": "2026-06-21T19:02:26Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -901,9 +901,9 @@
       "venue": "Mercedes-Benz Stadium, Atlanta",
       "home": "ESP",
       "away": "KSA",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 4,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "g-h-4",
