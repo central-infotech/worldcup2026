@@ -131,22 +131,24 @@ def find_football_boxes(wikitext: str) -> list:
     """
     results = []
     text = wikitext
-    # case-insensitive needle detection
-    lower = text.lower()
+    # NOTE: do NOT use text.lower() for offset-based searching — some chars
+    # (e.g. Turkish İ U+0130 → "i̇") expand when lowercased, shifting
+    # positions and corrupting brace matching. Use regex with re.IGNORECASE.
     needles = [
         "{{#invoke:football box",
         "{{football box collapsible",
         "{{football box",
     ]
+    needle_res = [re.compile(re.escape(n), re.IGNORECASE) for n in needles]
     i = 0
     while i < len(text):
         # find earliest needle position
         idx = -1
         used_needle = None
-        for n in needles:
-            j = lower.find(n, i)
-            if j != -1 and (idx == -1 or j < idx):
-                idx = j
+        for n, rx in zip(needles, needle_res):
+            m = rx.search(text, i)
+            if m is not None and (idx == -1 or m.start() < idx):
+                idx = m.start()
                 used_needle = n
         if idx == -1:
             break
@@ -390,6 +392,42 @@ def update_knockout(data: dict, name_to_code: dict) -> int:
     return updated
 
 
+def sanity_check(data: dict) -> list:
+    """グループステージの『俯瞰チェック』。
+
+    各グループについて kickoff_utc が既に過ぎている試合数(past)と
+    finished の試合数を比較し、ズレているグループを警告として返す。
+    1グループだけ取りこぼしている場合などのパーサ不具合の早期検知が目的。
+    """
+    now = datetime.now(timezone.utc)
+    by_group = {}
+    for m in data.get("group_matches", []):
+        g = m["group"]
+        s = by_group.setdefault(g, {"past": 0, "finished": 0, "missing_ids": []})
+        try:
+            ko = datetime.fromisoformat(m["kickoff_utc"].replace("Z", "+00:00"))
+        except Exception:
+            continue
+        if ko < now:
+            s["past"] += 1
+            if m.get("status") != "finished":
+                s["missing_ids"].append(m["id"])
+        if m.get("status") == "finished":
+            s["finished"] += 1
+
+    warnings = []
+    print(f"[sanity] now (UTC) = {now.strftime('%Y-%m-%dT%H:%M:%SZ')}")
+    for g in sorted(by_group):
+        s = by_group[g]
+        marker = "" if not s["missing_ids"] else f"  <-- MISSING {s['missing_ids']}"
+        print(f"[sanity]   Group {g}: finished={s['finished']:>2} / past={s['past']:>2}{marker}")
+        if s["missing_ids"]:
+            warnings.append((g, s["missing_ids"]))
+    if warnings:
+        print(f"[sanity] WARNING: {len(warnings)} group(s) have past-kickoff matches without results", file=sys.stderr)
+    return warnings
+
+
 def main():
     repo_root = Path(__file__).resolve().parent.parent
     data_path = repo_root / "public" / "tournament.json"
@@ -408,6 +446,8 @@ def main():
             encoding="utf-8",
         )
         print(f"[done] wrote {data_path}")
+
+    sanity_check(data)
 
 
 if __name__ == "__main__":
