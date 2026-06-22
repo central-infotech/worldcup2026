@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-22T08:39:26Z",
+  "updated_at": "2026-06-22T21:38:21Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1045,9 +1045,9 @@
       "venue": "AT&T Stadium, Arlington",
       "home": "ARG",
       "away": "AUT",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "g-j-4",
