@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-22T02:03:28Z",
+  "updated_at": "2026-06-22T08:39:26Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -841,9 +841,9 @@
       "venue": "BC Place, Vancouver",
       "home": "NZL",
       "away": "EGY",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 3,
+      "status": "finished"
     },
     {
       "id": "g-g-5",
