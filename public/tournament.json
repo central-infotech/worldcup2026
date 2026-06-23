@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-23T04:41:54Z",
+  "updated_at": "2026-06-23T08:43:35Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1057,9 +1057,9 @@
       "venue": "Levi's Stadium, Santa Clara",
       "home": "JOR",
       "away": "ALG",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 2,
+      "status": "finished"
     },
     {
       "id": "g-j-5",
