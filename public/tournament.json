@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-23T20:34:11Z",
+  "updated_at": "2026-06-23T22:47:06Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1189,9 +1189,9 @@
       "venue": "Gillette Stadium, Foxborough",
       "home": "ENG",
       "away": "GHA",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 0,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "g-l-4",
