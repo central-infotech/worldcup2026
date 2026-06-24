@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-24T05:43:48Z",
+  "updated_at": "2026-06-24T21:54:12Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -493,9 +493,9 @@
       "venue": "BC Place, Vancouver",
       "home": "SUI",
       "away": "CAN",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-b-6",
@@ -505,9 +505,9 @@
       "venue": "Lumen Field, Seattle",
       "home": "BIH",
       "away": "QAT",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 3,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-c-1",
