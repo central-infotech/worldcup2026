@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-25T04:46:39Z",
+  "updated_at": "2026-06-25T22:56:12Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -709,9 +709,9 @@
       "venue": "Lincoln Financial Field, Philadelphia",
       "home": "CUW",
       "away": "CIV",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 0,
+      "away_score": 2,
+      "status": "finished"
     },
     {
       "id": "g-e-6",
@@ -721,9 +721,9 @@
       "venue": "MetLife Stadium, East Rutherford",
       "home": "ECU",
       "away": "GER",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-f-1",
