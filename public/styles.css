@@ -511,6 +511,11 @@ body {
   white-space: nowrap;
 }
 
+/* Lock a baseline row height: long names like ボスニア・ヘルツェゴビナ
+   shrink via --name-scale, which would otherwise let that row's
+   inline-block collapse below the line-box of neighboring rows. */
+.cross-table tbody tr { height: 32px; }
+
 .cross-table thead th {
   background: var(--bg-2);
   color: var(--text-dim);
