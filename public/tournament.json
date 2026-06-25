@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-24T21:54:12Z",
+  "updated_at": "2026-06-25T04:46:39Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -421,9 +421,9 @@
       "venue": "Estadio Azteca, Mexico City",
       "home": "CZE",
       "away": "MEX",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 0,
+      "away_score": 3,
+      "status": "finished"
     },
     {
       "id": "g-a-6",
@@ -433,9 +433,9 @@
       "venue": "Estadio BBVA, Guadalupe",
       "home": "RSA",
       "away": "KOR",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "g-b-1",
@@ -565,9 +565,9 @@
       "venue": "Hard Rock Stadium, Miami Gardens",
       "home": "SCO",
       "away": "BRA",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 0,
+      "away_score": 3,
+      "status": "finished"
     },
     {
       "id": "g-c-6",
@@ -577,9 +577,9 @@
       "venue": "Mercedes-Benz Stadium, Atlanta",
       "home": "MAR",
       "away": "HAI",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 4,
+      "away_score": 2,
+      "status": "finished"
     },
     {
       "id": "g-d-1",
