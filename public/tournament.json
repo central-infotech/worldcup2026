@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-25T22:56:12Z",
+  "updated_at": "2026-06-26T01:37:25Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -781,9 +781,9 @@
       "venue": "AT&T Stadium, Arlington",
       "home": "JPN",
       "away": "SWE",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-f-6",
@@ -793,9 +793,9 @@
       "venue": "Arrowhead Stadium, Kansas City",
       "home": "TUN",
       "away": "NED",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 3,
+      "status": "finished"
     },
     {
       "id": "g-g-1",
