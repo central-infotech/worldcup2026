@@ -617,6 +617,13 @@ body {
   font-size: 0.78rem;
 }
 
+.third-place-table .rank-cell {
+  background: var(--bg-2);
+  font-weight: 700;
+  color: var(--accent);
+  width: 40px;
+}
+
 .third-place-table .name-cell {
   text-align: left;
   background: var(--bg-2);

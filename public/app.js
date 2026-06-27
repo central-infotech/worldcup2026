@@ -565,7 +565,7 @@ function renderThirdPlaceRanking(data) {
 
   const thead = document.createElement('thead');
   const hr = document.createElement('tr');
-  ['国名', '残', '勝点', '得点', '失点', '得失'].forEach((label) => {
+  ['順位', '国名', '残', '勝点', '得点', '失点', '得失'].forEach((label) => {
     const cell = document.createElement('th');
     cell.textContent = label;
     hr.appendChild(cell);
@@ -577,6 +577,11 @@ function renderThirdPlaceRanking(data) {
   ranking.forEach((r, i) => {
     const tr = document.createElement('tr');
     if (i === 7) tr.classList.add('cutoff');
+
+    const rankTd = document.createElement('td');
+    rankTd.className = 'rank-cell';
+    rankTd.textContent = r.rank;
+    tr.appendChild(rankTd);
 
     const team = data.teams[r.code];
     const nameTd = document.createElement('td');
