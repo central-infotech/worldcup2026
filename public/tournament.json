@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-27T02:22:29Z",
+  "updated_at": "2026-06-27T05:49:30Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -853,9 +853,9 @@
       "venue": "Lumen Field, Seattle",
       "home": "EGY",
       "away": "IRN",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-g-6",
@@ -865,9 +865,9 @@
       "venue": "BC Place, Vancouver",
       "home": "NZL",
       "away": "BEL",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 5,
+      "status": "finished"
     },
     {
       "id": "g-h-1",
@@ -1700,6 +1700,16 @@
       "rank": 5
     },
     {
+      "code": "IRN",
+      "group": "G",
+      "remaining": 0,
+      "pts": 3,
+      "gf": 3,
+      "ga": 3,
+      "gd": 0,
+      "rank": 6
+    },
+    {
       "code": "CRO",
       "group": "L",
       "remaining": 1,
@@ -1707,7 +1717,7 @@
       "gf": 3,
       "ga": 4,
       "gd": -1,
-      "rank": 6
+      "rank": 7
     },
     {
       "code": "KOR",
@@ -1717,7 +1727,7 @@
       "gf": 2,
       "ga": 3,
       "gd": -1,
-      "rank": 7
+      "rank": 8
     },
     {
       "code": "ALG",
@@ -1727,7 +1737,7 @@
       "gf": 2,
       "ga": 4,
       "gd": -2,
-      "rank": 8
+      "rank": 9
     },
     {
       "code": "SCO",
@@ -1737,16 +1747,6 @@
       "gf": 1,
       "ga": 4,
       "gd": -3,
-      "rank": 9
-    },
-    {
-      "code": "BEL",
-      "group": "G",
-      "remaining": 1,
-      "pts": 2,
-      "gf": 1,
-      "ga": 1,
-      "gd": 0,
       "rank": 10
     },
     {
