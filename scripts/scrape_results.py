@@ -392,6 +392,66 @@ def update_knockout(data: dict, name_to_code: dict) -> int:
     return updated
 
 
+def compute_third_place_ranking(data: dict) -> list:
+    """各グループの3位チームを集めて順位付け。
+
+    48チーム制では3位の上位8チームが決勝トーナメント (R32) に進出する。
+    並び替えは FIFA の主要タイブレーカー (勝点 → 得失点差 → 得点) を適用し、
+    全て同値の場合はチームコード昇順で安定化する。フェアプレー/抽選など
+    末端タイブレーカーは未対応 (実用上ほぼ発生しない)。
+    """
+    ranking = []
+    for g in GROUPS:
+        codes = data["groups"][g]
+        matches = [m for m in data["group_matches"] if m["group"] == g]
+        stats = {c: {"code": c, "P": 0, "GF": 0, "GA": 0, "Pts": 0} for c in codes}
+        for m in matches:
+            hs, as_ = m.get("home_score"), m.get("away_score")
+            if hs is None or as_ is None:
+                continue
+            h, a = stats[m["home"]], stats[m["away"]]
+            h["P"] += 1
+            a["P"] += 1
+            h["GF"] += hs
+            h["GA"] += as_
+            a["GF"] += as_
+            a["GA"] += hs
+            if hs > as_:
+                h["Pts"] += 3
+            elif hs < as_:
+                a["Pts"] += 3
+            else:
+                h["Pts"] += 1
+                a["Pts"] += 1
+        for s in stats.values():
+            s["GD"] = s["GF"] - s["GA"]
+        sorted_codes = sorted(
+            codes,
+            key=lambda c: (-stats[c]["Pts"], -stats[c]["GD"], -stats[c]["GF"], c),
+        )
+        third = stats[sorted_codes[2]]
+        ranking.append({
+            "code": third["code"],
+            "group": g,
+            "remaining": 3 - third["P"],
+            "pts": third["Pts"],
+            "gf": third["GF"],
+            "ga": third["GA"],
+            "gd": third["GD"],
+        })
+    ranking.sort(key=lambda r: (-r["pts"], -r["gd"], -r["gf"], r["code"]))
+    # 標準的な 1224 ランキング (同値は同順位、次の異なる値は本来の位置)
+    prev_key = None
+    for i, r in enumerate(ranking):
+        key = (r["pts"], r["gd"], r["gf"])
+        if key != prev_key:
+            r["rank"] = i + 1
+            prev_key = key
+        else:
+            r["rank"] = ranking[i - 1]["rank"]
+    return ranking
+
+
 def sanity_check(data: dict) -> list:
     """グループステージの『俯瞰チェック』。
 
@@ -439,7 +499,13 @@ def main():
     total = g_updated + k_updated
     print(f"[done] updated {total} matches (group: {g_updated}, knockout: {k_updated})")
 
-    if total > 0:
+    new_ranking = compute_third_place_ranking(data)
+    ranking_changed = data.get("third_place_ranking") != new_ranking
+    if ranking_changed:
+        data["third_place_ranking"] = new_ranking
+        print(f"[done] third-place ranking updated")
+
+    if total > 0 or ranking_changed:
         data["updated_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         data_path.write_text(
             json.dumps(data, indent=2, ensure_ascii=False) + "\n",

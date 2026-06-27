@@ -573,6 +573,64 @@ body {
 .result .mark-draw { color: var(--draw); }
 .result .mark-loss { color: var(--loss); }
 
+/* ====== 3rd-place ranking ====== */
+#third-place { margin-top: 16px; }
+
+.third-place-card {
+  background: linear-gradient(180deg, var(--panel-2) 0%, var(--panel) 22%);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 204, 51, 0.08);
+}
+
+.third-place-title {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.third-place-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.third-place-table th,
+.third-place-table td {
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  text-align: center;
+  vertical-align: middle;
+  font-feature-settings: "tnum";
+}
+
+.third-place-table thead th {
+  background: var(--bg-2);
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+.third-place-table .name-cell {
+  text-align: left;
+  background: var(--bg-2);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.third-place-table .name-cell .flag-img { margin-right: 6px; }
+
+/* 上位8チームのカットオフ。3px の太い金色ラインで区切る */
+.third-place-table tbody tr.cutoff td {
+  border-bottom: 3px solid var(--accent);
+}
+
 @media (max-width: 900px) {
   .bracket { padding: 10px 6px; --gap: 14px; min-height: 640px; }
   .round { min-width: 110px; }
@@ -589,4 +647,7 @@ body {
   .round.col-final { min-width: 140px; }
   .match-cell { font-size: 0.66rem; }
   .flag-img { width: 16px; height: 12px; }
+  .third-place-table { font-size: 0.74rem; }
+  .third-place-table th,
+  .third-place-table td { padding: 4px 5px; }
 }

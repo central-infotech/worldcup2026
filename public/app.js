@@ -15,6 +15,7 @@
 
   renderBracket(data);
   renderGroups(data);
+  renderThirdPlaceRanking(data);
 })();
 
 /* ====== Time formatting (JST) ====== */
@@ -539,6 +540,68 @@ function th(html) {
   const e = document.createElement('th');
   e.innerHTML = html;
   return e;
+}
+
+/* ====== 3rd-place ranking table ======
+   48チーム制では各グループ3位の上位8チームがR32進出。
+   並び順・統計値は scrape_results.py が tournament.json に書き込む。 */
+function renderThirdPlaceRanking(data) {
+  const container = document.getElementById('third-place');
+  if (!container) return;
+  container.innerHTML = '';
+  const ranking = data.third_place_ranking;
+  if (!Array.isArray(ranking) || !ranking.length) return;
+
+  const card = document.createElement('div');
+  card.className = 'third-place-card';
+
+  const title = document.createElement('h3');
+  title.className = 'third-place-title';
+  title.textContent = '3位チーム順位 (上位8チームが決勝トーナメント進出)';
+  card.appendChild(title);
+
+  const table = document.createElement('table');
+  table.className = 'third-place-table';
+
+  const thead = document.createElement('thead');
+  const hr = document.createElement('tr');
+  ['国名', '残', '勝点', '得点', '失点', '得失'].forEach((label) => {
+    const cell = document.createElement('th');
+    cell.textContent = label;
+    hr.appendChild(cell);
+  });
+  thead.appendChild(hr);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  ranking.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    if (i === 7) tr.classList.add('cutoff');
+
+    const team = data.teams[r.code];
+    const nameTd = document.createElement('td');
+    nameTd.className = 'name-cell';
+    nameTd.innerHTML = `${flagImg(team, 'flag-sm')}${nameSpan(team ? team.name_ja : r.code)}`;
+    tr.appendChild(nameTd);
+
+    const cells = [
+      r.remaining,
+      r.pts,
+      r.gf,
+      r.ga,
+      (r.gd > 0 ? '+' : '') + r.gd,
+    ];
+    cells.forEach((v) => {
+      const td = document.createElement('td');
+      td.textContent = v;
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  card.appendChild(table);
+  container.appendChild(card);
 }
 
 function formatResult(m, rowIsHome) {
