@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-27T05:49:30Z",
+  "updated_at": "2026-06-27T23:50:24Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1213,9 +1213,9 @@
       "venue": "MetLife Stadium, East Rutherford",
       "home": "PAN",
       "away": "ENG",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 0,
+      "away_score": 2,
+      "status": "finished"
     },
     {
       "id": "g-l-6",
@@ -1225,9 +1225,9 @@
       "venue": "Lincoln Financial Field, Philadelphia",
       "home": "CRO",
       "away": "GHA",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 1,
+      "status": "finished"
     }
   ],
   "knockout_matches": [
@@ -1670,6 +1670,16 @@
       "rank": 2
     },
     {
+      "code": "GHA",
+      "group": "L",
+      "remaining": 0,
+      "pts": 4,
+      "gf": 2,
+      "ga": 2,
+      "gd": 0,
+      "rank": 2
+    },
+    {
       "code": "BIH",
       "group": "B",
       "remaining": 0,
@@ -1677,7 +1687,7 @@
       "gf": 5,
       "ga": 6,
       "gd": -1,
-      "rank": 3
+      "rank": 4
     },
     {
       "code": "PAR",
@@ -1687,7 +1697,7 @@
       "gf": 2,
       "ga": 4,
       "gd": -2,
-      "rank": 4
+      "rank": 5
     },
     {
       "code": "SEN",
@@ -1697,7 +1707,7 @@
       "gf": 8,
       "ga": 6,
       "gd": 2,
-      "rank": 5
+      "rank": 6
     },
     {
       "code": "IRN",
@@ -1707,16 +1717,6 @@
       "gf": 3,
       "ga": 3,
       "gd": 0,
-      "rank": 6
-    },
-    {
-      "code": "CRO",
-      "group": "L",
-      "remaining": 1,
-      "pts": 3,
-      "gf": 3,
-      "ga": 4,
-      "gd": -1,
       "rank": 7
     },
     {
