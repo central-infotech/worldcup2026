@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-26T21:54:10Z",
+  "updated_at": "2026-06-27T01:21:24Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1650,6 +1650,26 @@
   ],
   "third_place_ranking": [
     {
+      "code": "SWE",
+      "group": "F",
+      "remaining": 0,
+      "pts": 4,
+      "gf": 7,
+      "ga": 7,
+      "gd": 0,
+      "rank": 1
+    },
+    {
+      "code": "ECU",
+      "group": "E",
+      "remaining": 0,
+      "pts": 4,
+      "gf": 2,
+      "ga": 2,
+      "gd": 0,
+      "rank": 2
+    },
+    {
       "code": "BIH",
       "group": "B",
       "remaining": 0,
@@ -1657,27 +1677,27 @@
       "gf": 5,
       "ga": 6,
       "gd": -1,
-      "rank": 1
-    },
-    {
-      "code": "SWE",
-      "group": "F",
-      "remaining": 1,
-      "pts": 3,
-      "gf": 6,
-      "ga": 6,
-      "gd": 0,
-      "rank": 2
-    },
-    {
-      "code": "SCO",
-      "group": "C",
-      "remaining": 1,
-      "pts": 3,
-      "gf": 1,
-      "ga": 1,
-      "gd": 0,
       "rank": 3
+    },
+    {
+      "code": "PAR",
+      "group": "D",
+      "remaining": 0,
+      "pts": 4,
+      "gf": 2,
+      "ga": 4,
+      "gd": -2,
+      "rank": 4
+    },
+    {
+      "code": "SEN",
+      "group": "I",
+      "remaining": 0,
+      "pts": 3,
+      "gf": 8,
+      "ga": 6,
+      "gd": 2,
+      "rank": 5
     },
     {
       "code": "CRO",
@@ -1687,7 +1707,17 @@
       "gf": 3,
       "ga": 4,
       "gd": -1,
-      "rank": 4
+      "rank": 6
+    },
+    {
+      "code": "KOR",
+      "group": "A",
+      "remaining": 0,
+      "pts": 3,
+      "gf": 2,
+      "ga": 3,
+      "gd": -1,
+      "rank": 7
     },
     {
       "code": "ALG",
@@ -1697,17 +1727,17 @@
       "gf": 2,
       "ga": 4,
       "gd": -2,
-      "rank": 5
+      "rank": 8
     },
     {
-      "code": "PAR",
-      "group": "D",
-      "remaining": 1,
+      "code": "SCO",
+      "group": "C",
+      "remaining": 0,
       "pts": 3,
-      "gf": 2,
+      "gf": 1,
       "ga": 4,
-      "gd": -2,
-      "rank": 5
+      "gd": -3,
+      "rank": 9
     },
     {
       "code": "CPV",
@@ -1717,7 +1747,7 @@
       "gf": 2,
       "ga": 2,
       "gd": 0,
-      "rank": 7
+      "rank": 10
     },
     {
       "code": "BEL",
@@ -1727,17 +1757,7 @@
       "gf": 1,
       "ga": 1,
       "gd": 0,
-      "rank": 8
-    },
-    {
-      "code": "CZE",
-      "group": "A",
-      "remaining": 1,
-      "pts": 1,
-      "gf": 2,
-      "ga": 3,
-      "gd": -1,
-      "rank": 9
+      "rank": 11
     },
     {
       "code": "COD",
@@ -1747,26 +1767,6 @@
       "gf": 1,
       "ga": 2,
       "gd": -1,
-      "rank": 10
-    },
-    {
-      "code": "ECU",
-      "group": "E",
-      "remaining": 1,
-      "pts": 1,
-      "gf": 0,
-      "ga": 1,
-      "gd": -1,
-      "rank": 11
-    },
-    {
-      "code": "SEN",
-      "group": "I",
-      "remaining": 1,
-      "pts": 0,
-      "gf": 3,
-      "ga": 6,
-      "gd": -3,
       "rank": 12
     }
   ]
