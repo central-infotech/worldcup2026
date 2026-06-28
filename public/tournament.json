@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-27T23:50:24Z",
+  "updated_at": "2026-06-28T02:26:32Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1141,9 +1141,9 @@
       "venue": "Hard Rock Stadium, Miami Gardens",
       "home": "COL",
       "away": "POR",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 0,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "g-k-6",
@@ -1153,9 +1153,9 @@
       "venue": "Mercedes-Benz Stadium, Atlanta",
       "home": "COD",
       "away": "UZB",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 3,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "g-l-1",
@@ -1650,6 +1650,16 @@
   ],
   "third_place_ranking": [
     {
+      "code": "COD",
+      "group": "K",
+      "remaining": 0,
+      "pts": 4,
+      "gf": 4,
+      "ga": 3,
+      "gd": 1,
+      "rank": 1
+    },
+    {
       "code": "SWE",
       "group": "F",
       "remaining": 0,
@@ -1657,7 +1667,7 @@
       "gf": 7,
       "ga": 7,
       "gd": 0,
-      "rank": 1
+      "rank": 2
     },
     {
       "code": "ECU",
@@ -1667,7 +1677,7 @@
       "gf": 2,
       "ga": 2,
       "gd": 0,
-      "rank": 2
+      "rank": 3
     },
     {
       "code": "GHA",
@@ -1677,7 +1687,7 @@
       "gf": 2,
       "ga": 2,
       "gd": 0,
-      "rank": 2
+      "rank": 3
     },
     {
       "code": "BIH",
@@ -1687,7 +1697,7 @@
       "gf": 5,
       "ga": 6,
       "gd": -1,
-      "rank": 4
+      "rank": 5
     },
     {
       "code": "PAR",
@@ -1697,7 +1707,7 @@
       "gf": 2,
       "ga": 4,
       "gd": -2,
-      "rank": 5
+      "rank": 6
     },
     {
       "code": "SEN",
@@ -1707,7 +1717,7 @@
       "gf": 8,
       "ga": 6,
       "gd": 2,
-      "rank": 6
+      "rank": 7
     },
     {
       "code": "IRN",
@@ -1717,7 +1727,7 @@
       "gf": 3,
       "ga": 3,
       "gd": 0,
-      "rank": 7
+      "rank": 8
     },
     {
       "code": "KOR",
@@ -1727,7 +1737,7 @@
       "gf": 2,
       "ga": 3,
       "gd": -1,
-      "rank": 8
+      "rank": 9
     },
     {
       "code": "ALG",
@@ -1737,7 +1747,7 @@
       "gf": 2,
       "ga": 4,
       "gd": -2,
-      "rank": 9
+      "rank": 10
     },
     {
       "code": "SCO",
@@ -1747,7 +1757,7 @@
       "gf": 1,
       "ga": 4,
       "gd": -3,
-      "rank": 10
+      "rank": 11
     },
     {
       "code": "URU",
@@ -1756,16 +1766,6 @@
       "pts": 2,
       "gf": 3,
       "ga": 4,
-      "gd": -1,
-      "rank": 11
-    },
-    {
-      "code": "COD",
-      "group": "K",
-      "remaining": 1,
-      "pts": 1,
-      "gf": 1,
-      "ga": 2,
       "gd": -1,
       "rank": 12
     }
