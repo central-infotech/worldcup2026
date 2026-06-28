@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-28T02:26:32Z",
+  "updated_at": "2026-06-28T05:59:13Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1069,9 +1069,9 @@
       "venue": "Arrowhead Stadium, Kansas City",
       "home": "ALG",
       "away": "AUT",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 3,
+      "away_score": 3,
+      "status": "finished"
     },
     {
       "id": "g-j-6",
@@ -1081,9 +1081,9 @@
       "venue": "AT&T Stadium, Arlington",
       "home": "JOR",
       "away": "ARG",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 3,
+      "status": "finished"
     },
     {
       "id": "g-k-1",
@@ -1700,6 +1700,16 @@
       "rank": 5
     },
     {
+      "code": "ALG",
+      "group": "J",
+      "remaining": 0,
+      "pts": 4,
+      "gf": 5,
+      "ga": 7,
+      "gd": -2,
+      "rank": 6
+    },
+    {
       "code": "PAR",
       "group": "D",
       "remaining": 0,
@@ -1707,7 +1717,7 @@
       "gf": 2,
       "ga": 4,
       "gd": -2,
-      "rank": 6
+      "rank": 7
     },
     {
       "code": "SEN",
@@ -1717,7 +1727,7 @@
       "gf": 8,
       "ga": 6,
       "gd": 2,
-      "rank": 7
+      "rank": 8
     },
     {
       "code": "IRN",
@@ -1727,7 +1737,7 @@
       "gf": 3,
       "ga": 3,
       "gd": 0,
-      "rank": 8
+      "rank": 9
     },
     {
       "code": "KOR",
@@ -1737,16 +1747,6 @@
       "gf": 2,
       "ga": 3,
       "gd": -1,
-      "rank": 9
-    },
-    {
-      "code": "ALG",
-      "group": "J",
-      "remaining": 1,
-      "pts": 3,
-      "gf": 2,
-      "ga": 4,
-      "gd": -2,
       "rank": 10
     },
     {
