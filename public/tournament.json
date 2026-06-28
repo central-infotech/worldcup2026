@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-28T05:59:13Z",
+  "updated_at": "2026-06-28T07:39:05Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -248,7 +248,7 @@
       "iso2": "pt"
     },
     "COD": {
-      "name_ja": "コンゴ",
+      "name_ja": "コンゴ民主共和国",
       "name_en": "DR Congo",
       "flag": "🇨🇩",
       "iso2": "cd"
@@ -1238,8 +1238,8 @@
       "venue": "SoFi Stadium, Inglewood",
       "home_code": "2A",
       "away_code": "2B",
-      "home": null,
-      "away": null,
+      "home": "RSA",
+      "away": "CAN",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1251,8 +1251,8 @@
       "venue": "NRG Stadium, Houston",
       "home_code": "1C",
       "away_code": "2F",
-      "home": null,
-      "away": null,
+      "home": "BRA",
+      "away": "JPN",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1264,8 +1264,8 @@
       "venue": "Gillette Stadium, Foxborough",
       "home_code": "1E",
       "away_code": "3(A/B/C/D/F)",
-      "home": null,
-      "away": null,
+      "home": "GER",
+      "away": "PAR",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1277,8 +1277,8 @@
       "venue": "Estadio BBVA, Guadalupe",
       "home_code": "1F",
       "away_code": "2C",
-      "home": null,
-      "away": null,
+      "home": "NED",
+      "away": "MAR",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1290,8 +1290,8 @@
       "venue": "AT&T Stadium, Arlington",
       "home_code": "2E",
       "away_code": "2I",
-      "home": null,
-      "away": null,
+      "home": "CIV",
+      "away": "NOR",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1303,8 +1303,8 @@
       "venue": "MetLife Stadium, East Rutherford",
       "home_code": "1I",
       "away_code": "3(C/D/F/G/H)",
-      "home": null,
-      "away": null,
+      "home": "FRA",
+      "away": "SWE",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1316,8 +1316,8 @@
       "venue": "Estadio Azteca, Mexico City",
       "home_code": "1A",
       "away_code": "3(C/E/F/H/I)",
-      "home": null,
-      "away": null,
+      "home": "MEX",
+      "away": "ECU",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1329,8 +1329,8 @@
       "venue": "Mercedes-Benz Stadium, Atlanta",
       "home_code": "1L",
       "away_code": "3(E/H/I/J/K)",
-      "home": null,
-      "away": null,
+      "home": "ENG",
+      "away": "COD",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1342,8 +1342,8 @@
       "venue": "Lumen Field, Seattle",
       "home_code": "1G",
       "away_code": "3(A/E/H/I/J)",
-      "home": null,
-      "away": null,
+      "home": "BEL",
+      "away": "SEN",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1355,8 +1355,8 @@
       "venue": "Levi's Stadium, Santa Clara",
       "home_code": "1D",
       "away_code": "3(B/E/F/I/J)",
-      "home": null,
-      "away": null,
+      "home": "USA",
+      "away": "BIH",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1368,8 +1368,8 @@
       "venue": "SoFi Stadium, Inglewood",
       "home_code": "1H",
       "away_code": "2J",
-      "home": null,
-      "away": null,
+      "home": "ESP",
+      "away": "AUT",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1381,8 +1381,8 @@
       "venue": "BMO Field, Toronto",
       "home_code": "2K",
       "away_code": "2L",
-      "home": null,
-      "away": null,
+      "home": "POR",
+      "away": "CRO",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1394,8 +1394,8 @@
       "venue": "BC Place, Vancouver",
       "home_code": "1B",
       "away_code": "3(E/F/G/I/J)",
-      "home": null,
-      "away": null,
+      "home": "SUI",
+      "away": "ALG",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1407,8 +1407,8 @@
       "venue": "AT&T Stadium, Arlington",
       "home_code": "2D",
       "away_code": "2G",
-      "home": null,
-      "away": null,
+      "home": "AUS",
+      "away": "EGY",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1420,8 +1420,8 @@
       "venue": "Hard Rock Stadium, Miami Gardens",
       "home_code": "1J",
       "away_code": "2H",
-      "home": null,
-      "away": null,
+      "home": "ARG",
+      "away": "CPV",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
@@ -1433,8 +1433,8 @@
       "venue": "Arrowhead Stadium, Kansas City",
       "home_code": "1K",
       "away_code": "3(D/E/I/J/L)",
-      "home": null,
-      "away": null,
+      "home": "COL",
+      "away": "GHA",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
