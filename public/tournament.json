@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-29T19:14:01Z",
+  "updated_at": "2026-06-29T23:50:40Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1266,9 +1266,9 @@
       "away_code": "3(A/B/C/D/F)",
       "home": "GER",
       "away": "PAR",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "75",
