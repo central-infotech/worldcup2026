@@ -337,14 +337,27 @@ def update_group_stage(data: dict, name_to_code: dict) -> int:
 
 
 def update_knockout(data: dict, name_to_code: dict) -> int:
-    """決勝トーナメントの試合結果（とチーム確定）を更新"""
-    page = "2026_FIFA_World_Cup_knockout_stage"
-    try:
-        wikitext = fetch_wikitext(page)
-    except Exception as e:
-        print(f"[warn] failed to fetch {page}: {e}", file=sys.stderr)
-        return 0
-    boxes = find_football_boxes(wikitext)
+    """決勝トーナメントの試合結果（とチーム確定）を更新。
+
+    Wikipedia は R32 (新設) を専用ページ `2026_FIFA_World_Cup_round_of_32` で
+    管理し、R16 以降を `2026_FIFA_World_Cup_knockout_stage` に置く構成。
+    両ページから football box を集めて処理する。
+    """
+    pages = [
+        "2026_FIFA_World_Cup_round_of_32",
+        "2026_FIFA_World_Cup_knockout_stage",
+    ]
+    boxes = []
+    for page in pages:
+        try:
+            wikitext = fetch_wikitext(page)
+        except Exception as e:
+            print(f"[warn] failed to fetch {page}: {e}", file=sys.stderr)
+            continue
+        page_boxes = find_football_boxes(wikitext)
+        print(f"[info] {page}: {len(page_boxes)} football boxes")
+        boxes.extend(page_boxes)
+        time.sleep(0.3)
     if not boxes:
         return 0
 
