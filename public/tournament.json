@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-29T03:27:02Z",
+  "updated_at": "2026-06-29T19:14:01Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1253,9 +1253,9 @@
       "away_code": "2F",
       "home": "BRA",
       "away": "JPN",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "74",
