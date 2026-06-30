@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-30T19:09:02Z",
+  "updated_at": "2026-06-30T22:56:20Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1305,9 +1305,9 @@
       "away_code": "3(C/D/F/G/H)",
       "home": "FRA",
       "away": "SWE",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 3,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "79",
@@ -1459,8 +1459,8 @@
       "venue": "Lincoln Financial Field, Philadelphia",
       "home_code": "W74",
       "away_code": "W77",
-      "home": null,
-      "away": null,
+      "home": "PAR",
+      "away": "FRA",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
