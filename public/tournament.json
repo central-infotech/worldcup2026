@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-30T05:56:17Z",
+  "updated_at": "2026-06-30T19:09:02Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1292,9 +1292,9 @@
       "away_code": "2I",
       "home": "CIV",
       "away": "NOR",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 2,
+      "status": "finished"
     },
     {
       "id": "77",
@@ -1472,8 +1472,8 @@
       "venue": "MetLife Stadium, East Rutherford",
       "home_code": "W76",
       "away_code": "W78",
-      "home": null,
-      "away": null,
+      "home": "BRA",
+      "away": "NOR",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
