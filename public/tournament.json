@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-30T03:48:02Z",
+  "updated_at": "2026-06-30T05:56:17Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1446,8 +1446,8 @@
       "venue": "NRG Stadium, Houston",
       "home_code": "W73",
       "away_code": "W75",
-      "home": null,
-      "away": null,
+      "home": "CAN",
+      "away": "MAR",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
