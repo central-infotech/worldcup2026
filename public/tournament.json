@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-01T05:05:18Z",
+  "updated_at": "2026-07-01T18:11:25Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1331,9 +1331,9 @@
       "away_code": "3(E/H/I/J/K)",
       "home": "ENG",
       "away": "COD",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "82",
@@ -1485,8 +1485,8 @@
       "venue": "Estadio Azteca, Mexico City",
       "home_code": "W79",
       "away_code": "W80",
-      "home": null,
-      "away": null,
+      "home": "MEX",
+      "away": "ENG",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
