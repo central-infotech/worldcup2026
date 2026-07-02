@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-01T23:54:47Z",
+  "updated_at": "2026-07-02T02:20:39Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1357,9 +1357,9 @@
       "away_code": "3(B/E/F/I/J)",
       "home": "USA",
       "away": "BIH",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "84",
@@ -1511,8 +1511,8 @@
       "venue": "Lumen Field, Seattle",
       "home_code": "W81",
       "away_code": "W82",
-      "home": null,
-      "away": null,
+      "home": "USA",
+      "away": "BEL",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
