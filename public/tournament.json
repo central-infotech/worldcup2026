@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-02T02:20:39Z",
+  "updated_at": "2026-07-02T22:36:09Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1370,9 +1370,9 @@
       "away_code": "2J",
       "home": "ESP",
       "away": "AUT",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 3,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "83",
