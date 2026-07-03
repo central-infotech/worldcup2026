@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-03T05:12:21Z",
+  "updated_at": "2026-07-03T22:32:23Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1409,9 +1409,9 @@
       "away_code": "2G",
       "home": "AUS",
       "away": "EGY",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "86",
