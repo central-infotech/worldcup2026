@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-02T22:36:09Z",
+  "updated_at": "2026-07-03T01:08:57Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1383,9 +1383,9 @@
       "away_code": "2L",
       "home": "POR",
       "away": "CRO",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "85",
@@ -1498,8 +1498,8 @@
       "venue": "AT&T Stadium, Arlington",
       "home_code": "W83",
       "away_code": "W84",
-      "home": null,
-      "away": null,
+      "home": "POR",
+      "away": "ESP",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
