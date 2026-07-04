@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-03T22:32:23Z",
+  "updated_at": "2026-07-04T01:07:50Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1422,9 +1422,9 @@
       "away_code": "2H",
       "home": "ARG",
       "away": "CPV",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 3,
+      "away_score": 2,
+      "status": "finished"
     },
     {
       "id": "87",
@@ -1524,8 +1524,8 @@
       "venue": "Mercedes-Benz Stadium, Atlanta",
       "home_code": "W86",
       "away_code": "W88",
-      "home": null,
-      "away": null,
+      "home": "ARG",
+      "away": "EGY",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
