@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-04T01:07:50Z",
+  "updated_at": "2026-07-04T05:06:52Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1435,9 +1435,9 @@
       "away_code": "3(D/E/I/J/L)",
       "home": "COL",
       "away": "GHA",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "90",
@@ -1537,8 +1537,8 @@
       "venue": "BC Place, Vancouver",
       "home_code": "W85",
       "away_code": "W87",
-      "home": null,
-      "away": null,
+      "home": "SUI",
+      "away": "COL",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
