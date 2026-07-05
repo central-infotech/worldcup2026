@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-05T01:13:55Z",
+  "updated_at": "2026-07-05T22:29:41Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1474,9 +1474,9 @@
       "away_code": "W78",
       "home": "BRA",
       "away": "NOR",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 2,
+      "status": "finished"
     },
     {
       "id": "92",
