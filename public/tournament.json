@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-04T20:28:31Z",
+  "updated_at": "2026-07-05T01:13:55Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1461,9 +1461,9 @@
       "away_code": "W77",
       "home": "PAR",
       "away": "FRA",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 0,
+      "away_score": 1,
+      "status": "finished"
     },
     {
       "id": "91",
@@ -1550,8 +1550,8 @@
       "venue": "Gillette Stadium, Foxborough",
       "home_code": "W89",
       "away_code": "W90",
-      "home": null,
-      "away": null,
+      "home": "FRA",
+      "away": "MAR",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
