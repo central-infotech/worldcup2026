@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-05T22:29:41Z",
+  "updated_at": "2026-07-06T04:50:25Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1487,9 +1487,9 @@
       "away_code": "W80",
       "home": "MEX",
       "away": "ENG",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 3,
+      "status": "finished"
     },
     {
       "id": "93",
@@ -1576,8 +1576,8 @@
       "venue": "Hard Rock Stadium, Miami Gardens",
       "home_code": "W91",
       "away_code": "W92",
-      "home": null,
-      "away": null,
+      "home": "NOR",
+      "away": "ENG",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
