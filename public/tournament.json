@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-07T18:28:06Z",
+  "updated_at": "2026-07-07T23:28:37Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1539,9 +1539,9 @@
       "away_code": "W87",
       "home": "SUI",
       "away": "COL",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 0,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "97",
@@ -1589,8 +1589,8 @@
       "venue": "Arrowhead Stadium, Kansas City",
       "home_code": "W95",
       "away_code": "W96",
-      "home": null,
-      "away": null,
+      "home": "ARG",
+      "away": "SUI",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
