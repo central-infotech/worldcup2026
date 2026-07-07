@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-07T05:33:56Z",
+  "updated_at": "2026-07-07T18:28:06Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1526,9 +1526,9 @@
       "away_code": "W88",
       "home": "ARG",
       "away": "EGY",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 3,
+      "away_score": 2,
+      "status": "finished"
     },
     {
       "id": "96",
