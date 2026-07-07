@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-06T21:09:32Z",
+  "updated_at": "2026-07-07T05:33:56Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1513,9 +1513,9 @@
       "away_code": "W82",
       "home": "USA",
       "away": "BEL",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 1,
+      "away_score": 4,
+      "status": "finished"
     },
     {
       "id": "95",
@@ -1563,8 +1563,8 @@
       "venue": "SoFi Stadium, Inglewood",
       "home_code": "W93",
       "away_code": "W94",
-      "home": null,
-      "away": null,
+      "home": "ESP",
+      "away": "BEL",
       "home_score": null,
       "away_score": null,
       "status": "scheduled"
