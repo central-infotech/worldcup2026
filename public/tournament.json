@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-07T23:28:37Z",
+  "updated_at": "2026-07-09T22:49:06Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1552,9 +1552,9 @@
       "away_code": "W90",
       "home": "FRA",
       "away": "MAR",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 2,
+      "away_score": 0,
+      "status": "finished"
     },
     {
       "id": "98",
