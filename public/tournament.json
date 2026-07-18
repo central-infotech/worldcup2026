@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-15T22:28:27Z",
+  "updated_at": "2026-07-18T23:24:52Z",
   "teams": {
     "MEX": {
       "name_ja": "メキシコ",
@@ -1630,9 +1630,9 @@
       "away_code": "L102",
       "home": "FRA",
       "away": "ENG",
-      "home_score": null,
-      "away_score": null,
-      "status": "scheduled"
+      "home_score": 4,
+      "away_score": 6,
+      "status": "finished"
     },
     {
       "id": "104",
